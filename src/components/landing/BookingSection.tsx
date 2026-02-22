@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CheckCircle2 } from "lucide-react";
+import { serviceTitlesForBooking } from "@/data/servicesContent";
 
 const schema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -19,14 +20,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const services = [
-  "Aesthetic Treatments",
-  "Skin Rejuvenation",
-  "Advanced Procedures",
-  "Dermal Fillers",
-  "Wellness Programme",
-  "Skin Analysis",
-];
+const services = serviceTitlesForBooking();
 
 const BookingSection = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -52,13 +46,13 @@ const BookingSection = () => {
             className="text-center mb-10"
           >
             <p className="text-sm font-sans font-semibold tracking-widest uppercase text-primary mb-3">
-              Get Started
+              Get Started 📅
             </p>
             <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-3">
               Book Your Consultation
             </h2>
             <p className="text-muted-foreground">
-              Fill in the form below and our team will be in touch within 24 hours.
+              Fill in the form below and our team will be in touch within 24 hours. ✨
             </p>
           </motion.div>
 
@@ -69,9 +63,9 @@ const BookingSection = () => {
               className="text-center py-16"
             >
               <CheckCircle2 className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="font-serif text-2xl font-bold text-foreground mb-2">Thank You!</h3>
+              <h3 className="font-serif text-2xl font-bold text-foreground mb-2">Thank You! 🙏</h3>
               <p className="text-muted-foreground">
-                We've received your booking request and will contact you shortly.
+                We've received your booking request and will contact you shortly. ✨
               </p>
             </motion.div>
           ) : (
@@ -158,7 +152,7 @@ const BookingSection = () => {
                   size="lg"
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-full text-base mt-2"
                 >
-                  Request Consultation
+                  Request Consultation 📅
                 </Button>
               </form>
             </Form>

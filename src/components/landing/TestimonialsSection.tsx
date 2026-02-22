@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "Dr. Mitchell and her team transformed not just my appearance, but my confidence. The care and attention to detail is second to none.",
+    quote: "Dr. Husnain Shah and the team transformed not just my appearance, but my confidence. The care and attention to detail is second to none.",
     name: "Rebecca Townsend",
     rating: 5,
   },
@@ -49,13 +49,13 @@ const TestimonialsSection = () => {
             transition={{ duration: 0.5 }}
           >
             <p className="text-sm font-sans font-semibold tracking-widest uppercase text-primary mb-3">
-              Testimonials
+              Testimonials 💬
             </p>
             <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
-              What Our Patients Say
+              What Our Patients Say 💬
             </h2>
             <p className="text-muted-foreground leading-relaxed">
-              Real experiences from real patients. Your trust is the foundation of everything we do.
+              Real experiences from real patients. Your trust is the foundation of everything we do. ❤️
             </p>
           </motion.div>
 

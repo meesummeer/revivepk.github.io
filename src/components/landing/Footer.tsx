@@ -1,7 +1,6 @@
-import { ArrowUp, MapPin, Phone, Mail, Instagram, Facebook, Twitter } from "lucide-react";
+import { MapPin, Phone, Mail, Instagram } from "lucide-react";
 
 const Footer = () => {
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
     <footer className="bg-foreground text-primary-foreground">
@@ -9,16 +8,16 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <h3 className="font-serif text-2xl font-bold mb-4">Revive</h3>
+            <img src="/logo.png" alt="Revive Healthcare" className="h-[7.5rem] w-auto object-contain mb-4 brightness-0 invert" />
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
               Premium aesthetic medicine delivered with international expertise,
-              precision, and care.
+              precision, and care. ✨
             </p>
           </div>
 
           {/* Hours */}
           <div>
-            <h4 className="font-sans font-semibold text-sm uppercase tracking-wider mb-4">Opening Hours</h4>
+            <h4 className="font-sans font-semibold text-sm uppercase tracking-wider mb-4">Opening Hours 🕐</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
               <li>Monday – Saturday</li>
               <li>12:00 PM – 9:00 PM</li>
@@ -26,58 +25,74 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Branches */}
           <div>
-            <h4 className="font-sans font-semibold text-sm uppercase tracking-wider mb-4">Contact</h4>
-            <ul className="space-y-3 text-sm text-primary-foreground/70">
-              <li className="flex items-start gap-2">
-                <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
-                123 Harley Street, London W1G 6AX
-              </li>
-              <li className="flex items-center gap-2">
-                <Phone className="h-4 w-4 shrink-0" />
-                +44 20 7000 0000
-              </li>
-              <li className="flex items-center gap-2">
+            <h4 className="font-sans font-semibold text-sm uppercase tracking-wider mb-4">Our Branches</h4>
+            <div className="space-y-6 text-sm text-primary-foreground/70">
+              <div>
+                <p className="font-medium text-primary-foreground/90 mb-1.5">DHA</p>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2">
+                    <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
+                    23-C, Lane 10, Bukhari Commercial, Phase 6, DHA
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Phone className="h-4 w-4 shrink-0" />
+                    <a href="tel:03011788000" className="hover:text-primary-foreground transition-colors">0301-1788000</a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-medium text-primary-foreground/90 mb-1.5">Bahadurabad</p>
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2">
+                    <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
+                    Plot#102, Shop#1, Imperial Residency, Bahadurabad, Karachi, Pakistan 07482
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Phone className="h-4 w-4 shrink-0" />
+                    <a href="tel:03030008483" className="hover:text-primary-foreground transition-colors">0303-0008483</a>
+                  </li>
+                </ul>
+              </div>
+              <div className="flex items-center gap-2 pt-2">
                 <Mail className="h-4 w-4 shrink-0" />
-                hello@reviveclinic.com
-              </li>
-            </ul>
+                <a href="mailto:hello@reviveclinic.com" className="hover:text-primary-foreground transition-colors">hello@reviveclinic.com</a>
+              </div>
+            </div>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="font-sans font-semibold text-sm uppercase tracking-wider mb-4">Quick Links</h4>
+            <h4 className="font-sans font-semibold text-sm uppercase tracking-wider mb-4">Quick Links 🔗</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
+              <li>
+                <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} className="hover:text-primary-foreground transition-colors">
+                  Home
+                </a>
+              </li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Careers</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Blog</a></li>
               <li><a href="#" className="hover:text-primary-foreground transition-colors">Privacy Policy</a></li>
             </ul>
             <div className="flex gap-4 mt-6">
-              <a href="#" className="text-primary-foreground/50 hover:text-primary-foreground transition-colors" aria-label="Instagram">
+              <a
+                href="https://www.instagram.com/revive_healthcare/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-foreground/50 hover:text-primary-foreground transition-colors"
+                aria-label="Instagram"
+              >
                 <Instagram className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-primary-foreground/50 hover:text-primary-foreground transition-colors" aria-label="Facebook">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-primary-foreground/50 hover:text-primary-foreground transition-colors" aria-label="Twitter">
-                <Twitter className="h-5 w-5" />
               </a>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-primary-foreground/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-primary-foreground/50">
+        <div className="border-t border-primary-foreground/10 mt-12 pt-8">
+          <p className="text-xs text-primary-foreground/50 text-center sm:text-left">
             © 2026 Revive Healthcare. All rights reserved.
           </p>
-          <button
-            onClick={scrollToTop}
-            className="p-2 rounded-full border border-primary-foreground/20 hover:bg-primary-foreground/10 transition-colors"
-            aria-label="Back to top"
-          >
-            <ArrowUp className="h-4 w-4" />
-          </button>
         </div>
       </div>
     </footer>

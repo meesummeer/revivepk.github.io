@@ -17,6 +17,7 @@ export default {
       fontFamily: {
         serif: ["Playfair Display", "serif"],
         sans: ["DM Sans", "sans-serif"],
+        rounded: ["Nunito", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -52,9 +53,9 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        coral: {
-          DEFAULT: "hsl(var(--coral))",
-          foreground: "hsl(var(--coral-foreground))",
+        teal: {
+          DEFAULT: "hsl(var(--teal))",
+          foreground: "hsl(var(--teal-foreground))",
         },
         gold: {
           DEFAULT: "hsl(var(--gold))",
