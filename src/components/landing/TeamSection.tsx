@@ -19,9 +19,17 @@ const branches = [
   },
 ];
 
-const bothBranches = [
-  { name: "Dr. Meesum Mir", role: "Operations & Growth Lead" },
-];
+function MemberCard({ name, role }: { name: string; role: string }) {
+  return (
+    <div className="text-center">
+      <div className="aspect-square rounded-2xl bg-cream mb-4 flex items-center justify-center">
+        <span className="text-muted-foreground text-sm font-sans">Photo</span>
+      </div>
+      <h3 className="font-rounded text-base font-semibold text-foreground">{name}</h3>
+      <p className="text-xs text-muted-foreground mt-1">{role}</p>
+    </div>
+  );
+}
 
 const TeamSection = () => (
   <section id="team" className="py-20 lg:py-28 bg-background">
@@ -41,31 +49,6 @@ const TeamSection = () => (
         </h2>
       </motion.div>
 
-      {/* Both branches – Operations & Growth Lead */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.4 }}
-        className="mb-12"
-      >
-        <p className="text-xs font-sans font-semibold tracking-wider uppercase text-primary/80 mb-4">
-          Both branches
-        </p>
-        <div className="flex flex-wrap justify-center gap-6">
-          {bothBranches.map((member) => (
-            <div key={member.name} className="text-center min-w-[160px]">
-              <div className="aspect-square rounded-2xl bg-cream mb-4 flex items-center justify-center mx-auto max-w-[140px]">
-                <span className="text-muted-foreground text-sm font-sans">Photo</span>
-              </div>
-              <h3 className="font-rounded text-lg font-semibold text-foreground">{member.name}</h3>
-              <p className="text-sm text-muted-foreground mt-1">{member.role}</p>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Branch-specific teams */}
       <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
         {branches.map((branch, bi) => (
           <motion.div
@@ -78,17 +61,22 @@ const TeamSection = () => (
             <p className="text-sm font-sans font-semibold tracking-wider uppercase text-primary mb-6">
               {branch.name}
             </p>
-            <div className="grid grid-cols-2 gap-6">
-              {branch.members.map((member, i) => (
-                <div key={member.name} className="text-center">
-                  <div className="aspect-square rounded-2xl bg-cream mb-4 flex items-center justify-center">
-                    <span className="text-muted-foreground text-sm font-sans">Photo</span>
-                  </div>
-                  <h3 className="font-rounded text-base font-semibold text-foreground">{member.name}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{member.role}</p>
+            {branch.name === "Bahadurabad" ? (
+              <div className="flex flex-col gap-6">
+                <MemberCard name={branch.members[0].name} role={branch.members[0].role} />
+                <div className="grid grid-cols-2 gap-6">
+                  <MemberCard name={branch.members[1].name} role={branch.members[1].role} />
+                  <MemberCard name={branch.members[2].name} role={branch.members[2].role} />
                 </div>
-              ))}
-            </div>
+                <MemberCard name={branch.members[3].name} role={branch.members[3].role} />
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-6">
+                {branch.members.map((member) => (
+                  <MemberCard key={member.name} name={member.name} role={member.role} />
+                ))}
+              </div>
+            )}
           </motion.div>
         ))}
       </div>
