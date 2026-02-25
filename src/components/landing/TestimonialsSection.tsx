@@ -4,23 +4,18 @@ import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "Dr. Husnain Shah and the team transformed not just my appearance, but my confidence. The care and attention to detail is second to none.",
-    name: "Rebecca Townsend",
+    quote: "I got PRP treatment for my acne at Revive Tariq Road branch, and I had a very good experience. I followed the treatments recommended by Dr. Husnain, and my PRP sessions were done by Dr. Fatima.\nAfter the treatment, I noticed a visible improvement in my skin. My skin feels smoother and has a nice healthy glow now. I am satisfied with the results and overall service.\nHighly recommended for anyone looking for effective acne and skin treatments.",
+    name: "Romana",
     rating: 5,
   },
   {
-    quote: "From the moment I walked in, I felt at ease. The results exceeded all expectations — natural, elegant, and exactly what I wanted.",
-    name: "James Hargreaves",
+    quote: "I had never considered doing any skin treatments before, but when I had visited Revive Dermatology for a while and I was honestly quite impressed by how some of the results looked.",
+    name: "Umer Saeed",
     rating: 5,
   },
   {
-    quote: "A truly premium experience. The clinic is immaculate, the staff are warm and knowledgeable, and the results speak for themselves.",
-    name: "Sophia Laurent",
-    rating: 5,
-  },
-  {
-    quote: "I've been to clinics across Europe, and Revive is genuinely world-class. Professional, discreet, and exceptional results every time.",
-    name: "David Al-Rashid",
+    quote: "I have been visiting Revive – The House of Dermatology since 2022, and I am extremely satisfied with the quality of services provided. Dr. Husnain Shah and his entire team demonstrate exceptional professionalism, always treating patients with genuine care.\n\nI have also recently undergone a few procedures at the clinic, and I am highly satisfied with the results. Dr. Husnain is highly skilled and experienced in dermatological and aesthetic treatments, and he ensures complete patient satisfaction before concluding any procedure. His attention to detail and commitment to achieving the best possible outcomes truly stand out.\n\nThe pricing is reasonable, and the overall experience has consistently been excellent. I highly recommend this clinic to anyone seeking safe, reliable, and professional dermatology and aesthetic services.",
+    name: "Shahnaz Nasir",
     rating: 5,
   },
 ];
