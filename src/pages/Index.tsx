@@ -7,6 +7,7 @@ import ServicesSection from "@/components/landing/ServicesSection";
 import PromotionsSection from "@/components/landing/PromotionsSection";
 import TeamSection from "@/components/landing/TeamSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
+import ResultsSection from "@/components/landing/ResultsSection";
 import BookingSection from "@/components/landing/BookingSection";
 import Footer from "@/components/landing/Footer";
 import MobileBookingCTA from "@/components/landing/MobileBookingCTA";
@@ -39,6 +40,7 @@ const Index = () => {
         <PromotionsSection />
         <TeamSection />
         <TestimonialsSection />
+        <ResultsSection />
         <BookingSection />
       </main>
       <Footer />

@@ -75,9 +75,11 @@ const TestimonialsSection = () => {
                       <Star key={i} className="h-4 w-4 fill-gold text-gold" />
                     ))}
                   </div>
-                  <blockquote className="font-serif text-lg md:text-xl text-foreground leading-relaxed italic mb-6">
-                    "{t.quote}"
-                  </blockquote>
+                  <div className="max-h-[40vh] overflow-y-auto pr-2 mb-6">
+                    <blockquote className="font-serif text-lg md:text-xl text-foreground leading-relaxed italic whitespace-pre-line">
+                      "{t.quote}"
+                    </blockquote>
+                  </div>
                   <p className="font-sans text-sm font-semibold text-foreground">{t.name}</p>
                 </motion.div>
               </AnimatePresence>

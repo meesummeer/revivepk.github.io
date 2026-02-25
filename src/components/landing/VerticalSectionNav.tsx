@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Home, User, Sparkles, Tag, Users, MessageCircle, Calendar } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Home, User, Sparkles, Tag, Users, MessageCircle, Calendar, Briefcase } from "lucide-react";
 
 const SECTIONS = [
   { id: "hero", href: "#", icon: Home, label: "Home" },
@@ -8,6 +9,7 @@ const SECTIONS = [
   { id: "promotions", href: "#promotions", icon: Tag, label: "Promotions" },
   { id: "team", href: "#team", icon: Users, label: "Team" },
   { id: "testimonials", href: "#testimonials", icon: MessageCircle, label: "Testimonials" },
+  { id: "careers", href: "/careers", icon: Briefcase, label: "Careers" },
   { id: "booking", href: "#booking", icon: Calendar, label: "Book" },
 ] as const;
 
@@ -17,6 +19,9 @@ const HERO_HIDE_THRESHOLD = 0.85;
 export default function VerticalSectionNav() {
   const [activeId, setActiveId] = useState<string>("hero");
   const [isInHero, setIsInHero] = useState(true);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const checkHero = () => {
@@ -63,6 +68,10 @@ export default function VerticalSectionNav() {
   }, []);
 
   const handleClick = (href: string) => {
+    if (href.startsWith("/")) {
+      navigate(href);
+      return;
+    }
     if (href === "#") {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
@@ -70,34 +79,51 @@ export default function VerticalSectionNav() {
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const visible = activeId !== "hero" && !isInHero;
+  const isCareersPage = location.pathname === "/careers";
+  const visible = (activeId !== "hero" && !isInHero) || isCareersPage;
+
+  const hoveredLabel = hoveredId ? SECTIONS.find((s) => s.id === hoveredId)?.label : null;
 
   return (
-    <nav
-      className={`fixed right-4 top-1/2 -translate-y-1/2 z-30 hidden lg:flex flex-col gap-1 rounded-full bg-card/90 backdrop-blur-sm border border-border shadow-sm p-2 transition-opacity duration-300 ease-out ${
+    <div
+      className={`fixed right-4 top-1/2 -translate-y-1/2 z-30 hidden lg:flex items-center gap-2 transition-opacity duration-300 ease-out ${
         visible ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
-      aria-label="Section navigation"
       aria-hidden={!visible}
     >
-      {SECTIONS.map(({ id, href, icon: Icon, label }) => {
-        const isActive = activeId === id;
-        return (
-          <button
-            key={id}
-            onClick={() => handleClick(href)}
-            className={`p-2.5 rounded-full transition-colors ${
-              isActive
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted"
-            }`}
-            aria-label={label}
-            aria-current={isActive ? "location" : undefined}
-          >
-            <Icon className="h-5 w-5" />
-          </button>
-        );
-      })}
-    </nav>
+      {/* Label shown on hover, to the left of the icons */}
+      <span
+        className={`text-sm font-medium text-foreground whitespace-nowrap bg-card/95 backdrop-blur-sm border border-border rounded-lg px-3 py-1.5 shadow-sm transition-all duration-200 ${
+          hoveredLabel ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 pointer-events-none"
+        }`}
+      >
+        {hoveredLabel}
+      </span>
+      <nav
+        className="flex flex-col gap-1 rounded-full bg-card/90 backdrop-blur-sm border border-border shadow-sm p-2"
+        aria-label="Section navigation"
+      >
+        {SECTIONS.map(({ id, href, icon: Icon, label }) => {
+          const isActive = activeId === id || (id === "careers" && isCareersPage);
+          return (
+            <button
+              key={id}
+              onClick={() => handleClick(href)}
+              onMouseEnter={() => setHoveredId(id)}
+              onMouseLeave={() => setHoveredId(null)}
+              className={`p-2.5 rounded-full transition-colors ${
+                isActive
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              }`}
+              aria-label={label}
+              aria-current={isActive ? "location" : undefined}
+            >
+              <Icon className="h-5 w-5" />
+            </button>
+          );
+        })}
+      </nav>
+    </div>
   );
 }

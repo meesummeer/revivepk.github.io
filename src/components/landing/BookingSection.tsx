@@ -22,16 +22,34 @@ type FormData = z.infer<typeof schema>;
 
 const services = serviceTitlesForBooking();
 
+const API_BASE = import.meta.env.VITE_API_URL || "";
+
 const BookingSection = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { name: "", email: "", phone: "", service: "", date: "" },
   });
 
-  const onSubmit = (_data: FormData) => {
-    setSubmitted(true);
+  const onSubmit = async (data: FormData) => {
+    setError(null);
+    try {
+      const res = await fetch(`${API_BASE}/api/booking`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(json.error || "Something went wrong. Please try again.");
+        return;
+      }
+      setSubmitted(true);
+    } catch {
+      setError("Network error. Please try again.");
+    }
   };
 
   return (
@@ -147,6 +165,9 @@ const BookingSection = () => {
                     </FormItem>
                   )}
                 />
+                {error && (
+                <p className="text-sm text-destructive text-center">{error}</p>
+              )}
                 <Button
                   type="submit"
                   size="lg"

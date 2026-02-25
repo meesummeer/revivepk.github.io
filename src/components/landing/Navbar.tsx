@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -9,17 +10,23 @@ const navLinks = [
   { label: "About", href: "#doctor" },
   { label: "Team", href: "#team" },
   { label: "Testimonials", href: "#testimonials" },
+  { label: "Careers", href: "/careers" },
   { label: "Contact", href: "#booking" },
 ];
 
 const Navbar = ({ scrollProgress = 0 }: { scrollProgress?: number }) => {
   const [open, setOpen] = useState(false);
   const scrolled = scrollProgress > 0.5;
+  const navigate = useNavigate();
 
   const handleNav = (href: string) => {
     setOpen(false);
     if (href === "#") {
       window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    if (href.startsWith("/")) {
+      navigate(href);
       return;
     }
     const el = document.querySelector(href);
