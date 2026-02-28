@@ -27,7 +27,7 @@ const TestimonialsSection = () => {
   const prev = () => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
 
   useEffect(() => {
-    const timer = setInterval(next, 6000);
+    const timer = setInterval(next, 10000);
     return () => clearInterval(timer);
   }, [next]);
 
@@ -54,32 +54,36 @@ const TestimonialsSection = () => {
             </p>
           </motion.div>
 
-          {/* Testimonial card */}
+          {/* Testimonial card - fixed height so section doesn't resize when switching testimonials */}
           <div className="relative lg:sticky lg:top-32">
-            <div className="bg-card rounded-2xl p-8 md:p-10 border border-border min-h-[260px] flex flex-col justify-between">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={current}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="flex gap-1 mb-5">
-                    {Array.from({ length: t.rating }).map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-gold text-gold" />
-                    ))}
-                  </div>
-                  <div className="max-h-[40vh] overflow-y-auto pr-2 mb-6">
-                    <blockquote className="font-serif text-lg md:text-xl text-foreground leading-relaxed italic whitespace-pre-line">
-                      "{t.quote}"
-                    </blockquote>
-                  </div>
-                  <p className="font-sans text-sm font-semibold text-foreground">{t.name}</p>
-                </motion.div>
-              </AnimatePresence>
-
-              <div className="flex items-center gap-3 mt-6">
+            <div className="bg-card rounded-2xl p-8 md:p-10 border border-border h-[420px] flex flex-col">
+              <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={current}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex flex-col flex-1 min-h-0"
+                  >
+                    <div className="flex gap-1 mb-5 shrink-0">
+                      {Array.from({ length: t.rating }).map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-gold text-gold" />
+                      ))}
+                    </div>
+                    <div className="h-[240px] overflow-y-auto pr-2 shrink-0">
+                      <blockquote className="font-serif text-lg md:text-xl text-foreground leading-relaxed italic whitespace-pre-line">
+                        "{t.quote}"
+                      </blockquote>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+              <p className="font-sans text-base font-semibold text-foreground pt-4 pb-3 border-t border-border shrink-0">
+                {t.name}
+              </p>
+              <div className="flex items-center justify-end gap-3 shrink-0">
                 <button
                   onClick={prev}
                   className="p-2 rounded-full border border-border hover:bg-muted transition-colors"

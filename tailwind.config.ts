@@ -79,6 +79,10 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundImage: {
+        "dark-emerald-gradient":
+          "linear-gradient(180deg, #0d3329 0%, #0f4c3a 50%, #115e59 100%)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

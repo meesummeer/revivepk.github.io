@@ -44,27 +44,10 @@ export default function ResultsSection() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="container mx-auto px-4 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-10"
-        >
-          <p className="text-sm font-sans font-semibold tracking-widest uppercase text-primary mb-3">
-            Results
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground">
-            Before & After
-          </h2>
-          <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
-            Real outcomes from our treatments. Swipe or use the arrows to explore.
-          </p>
-        </motion.div>
-
-        <div className="max-w-4xl mx-auto">
-          <div className="relative rounded-2xl overflow-hidden shadow-lg border border-border bg-card aspect-[4/3] max-h-[70vh]">
+      <div className="container mx-auto px-4 lg:px-8 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr,1fr] gap-10 lg:gap-14 items-center">
+          <div className="w-full max-w-2xl lg:max-w-none order-2 lg:order-1">
+          <div className="relative rounded-2xl overflow-hidden shadow-lg border border-border bg-card aspect-[4/3] min-h-[320px] sm:min-h-[380px] max-h-[75vh]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={slide.id}
@@ -116,6 +99,25 @@ export default function ResultsSection() {
           <p className="text-center text-sm text-muted-foreground mt-2">
             {current + 1} / {RESULTS.length}
           </p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5 }}
+            className="text-left order-1 lg:order-2"
+          >
+            <p className="text-base font-sans font-semibold tracking-widest uppercase text-primary mb-4">
+              Results
+            </p>
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
+              Before & After
+            </h2>
+            <p className="text-muted-foreground mt-4 text-lg md:text-xl max-w-md leading-relaxed">
+              Real outcomes from our treatments. Swipe or use the arrows to explore.
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -9,13 +9,20 @@ const badges = [
   { icon: GraduationCap, label: "Aesthetic Specialist" },
 ];
 
+/** 6 placeholder images: 1 left (grows), 2-6 reveal into a collage on the right. */
+const DOCTOR_IMAGES = Array.from({ length: 6 }, (_, i) => ({
+  id: i,
+  src: `https://placehold.co/140x140/1e3a3f/e5e7eb?text=${i + 1}`,
+  alt: `Photo ${i + 1}`,
+}));
+
 const STEP_RANGES: [number, number][] = [
-  [0, 0.18],      // 1 – Identity
-  [0.18, 0.36],   // 2 – Credentials
-  [0.36, 0.54],   // 3 – Philosophy
-  [0.54, 0.72],   // 4 – Specializations
-  [0.72, 0.88],   // 5 – Trust
-  [0.88, 1],      // 6 – CTA
+  [0, 0.18],
+  [0.18, 0.36],
+  [0.36, 0.54],
+  [0.54, 0.72],
+  [0.72, 0.88],
+  [0.88, 1],
 ];
 
 function getStepOpacity(progress: number, start: number, end: number): number {
@@ -36,6 +43,23 @@ function getStepY(progress: number, start: number, end: number): number {
   if (progress > fadeOutStart) return 12 * (progress - fadeOutStart) / (end - fadeOutStart);
   return 0;
 }
+
+function getStepIndex(progress: number): number {
+  if (progress <= 0) return 0;
+  if (progress >= 1) return 5;
+  for (let i = 0; i < STEP_RANGES.length; i++) {
+    const [start, end] = STEP_RANGES[i];
+    if (progress >= start && progress < end) return i;
+  }
+  return 5;
+}
+
+const sectionLight = "text-white";
+const sectionMuted = "text-white/85";
+const gradientClass = "bg-dark-emerald-gradient";
+
+const IMG_SIZE = "w-[120px] h-[120px] sm:w-[142px] sm:h-[142px]";
+const LEFT_IMG_BASE = "max-w-[200px] sm:max-w-[240px] aspect-square";
 
 export default function DoctorSection() {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -94,86 +118,38 @@ export default function DoctorSection() {
     };
   }, [reduceMotion, updateProgress]);
 
+  const stepIndex = getStepIndex(progress);
+  const leftScale = reduceMotion ? 1 : 1 + progress * 0.28;
+
   if (reduceMotion) {
     return (
-      <section id="doctor" className="py-20 lg:py-28 bg-primary/10">
+      <section id="doctor" className={`py-20 lg:py-28 ${gradientClass}`}>
         <div className="container mx-auto px-4 lg:px-8 max-w-6xl">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5 }}
-              className="relative flex justify-center lg:block"
-            >
-              <div className="aspect-[3/4] w-full max-w-[220px] sm:max-w-[260px] lg:max-w-[280px] max-h-[55vh] rounded-2xl bg-cream overflow-hidden flex items-end justify-center">
-                <img
-                  src="/dr-husnain.jpeg"
-                  alt="Dr. Husnain Shah"
-                  className="w-full h-full object-cover object-center"
-                />
+            <div className="relative flex justify-center">
+              <div className={`${LEFT_IMG_BASE} rounded-2xl overflow-hidden border-2 border-white/30 shadow-lg`}>
+                <img src={DOCTOR_IMAGES[0].src} alt={DOCTOR_IMAGES[0].alt} className="w-full h-full object-cover" />
               </div>
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 rounded-full bg-gold/20 blur-2xl pointer-events-none" />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5 }}
-              className="font-rounded"
-            >
-              <p className="text-sm lg:text-base font-semibold tracking-[0.2em] uppercase text-primary mb-4 opacity-90">
-                Meet the Doctor 👋
-              </p>
-              <h2 className="font-rounded text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-3 tracking-tight leading-[1.1]">
-                Dr. Husnain Shah
-              </h2>
-              <p className="text-muted-foreground text-lg lg:text-xl font-medium tracking-wide mb-8">
-                Aesthetic Medicine Specialist ✨
-              </p>
+            </div>
+            <div className={`font-rounded ${sectionLight}`}>
+              <p className={`text-sm lg:text-base font-semibold tracking-[0.2em] uppercase ${sectionMuted} mb-4`}>Meet the Doctor</p>
+              <h2 className="font-rounded text-4xl sm:text-5xl lg:text-6xl font-bold mb-3 tracking-tight leading-[1.1]">Dr. Husnain Shah</h2>
+              <p className={`${sectionMuted} text-lg lg:text-xl font-medium tracking-wide mb-8`}>Aesthetic Medicine Specialist</p>
               <div className="flex flex-wrap gap-3 mb-6">
                 {badges.map((badge) => (
-                  <span
-                    key={badge.label}
-                    className="inline-flex items-center gap-2 bg-primary/10 text-foreground rounded-full px-5 py-2.5 text-base font-semibold border border-primary/20"
-                  >
-                    <badge.icon className="h-5 w-5 text-primary" />
+                  <span key={badge.label} className="inline-flex items-center gap-2 bg-white/15 text-white rounded-full px-5 py-2.5 text-base font-semibold border border-white/25">
+                    <badge.icon className="h-5 w-5" />
                     {badge.label}
                   </span>
                 ))}
               </div>
-              <p className="text-foreground/90 text-lg lg:text-xl leading-relaxed mb-6">
-                <span className="font-semibold text-foreground">Over 15 years</span> of experience in aesthetic medicine. Director of the International Education Board of
-                Aesthetics, Dr. Husnain Shah leads training programs across three continents. 🌍
+              <p className={`${sectionLight} text-lg lg:text-xl leading-relaxed mb-8`}>
+                <span className="font-semibold">Over 15 years</span> of experience in aesthetic medicine. Director of the International Education Board of Aesthetics, Dr. Husnain Shah leads training programs across three continents.
               </p>
-              <blockquote className="border-l-4 border-primary pl-8 pr-4 py-2 text-foreground leading-relaxed mb-8 text-xl lg:text-2xl italic">
-                <span className="text-primary font-semibold not-italic">&ldquo;My philosophy is simple:</span> enhance your natural beauty with precision,
-                safety, and artistry. Every treatment plan is as unique as the individual. ✨&rdquo;
-              </blockquote>
-              <p className="text-base font-semibold tracking-[0.15em] uppercase text-primary mb-3 opacity-90">
-                Key focus 🎯
-              </p>
-              <div className="flex flex-wrap gap-2 mb-6">
-                <span className="inline-flex rounded-full bg-primary/10 text-foreground px-4 py-2 text-sm font-semibold border border-primary/20">Evidence-based practice 🔬</span>
-                <span className="inline-flex rounded-full bg-primary/10 text-foreground px-4 py-2 text-sm font-semibold border border-primary/20">Bespoke plans ✨</span>
-                <span className="inline-flex rounded-full bg-primary/10 text-foreground px-4 py-2 text-sm font-semibold border border-primary/20">International standards 🌍</span>
-                <span className="inline-flex rounded-full bg-primary/10 text-foreground px-4 py-2 text-sm font-semibold border border-primary/20">Safety & artistry ❤️</span>
-              </div>
-              <p className="text-base font-semibold tracking-[0.15em] uppercase text-primary mb-3 opacity-90">
-                Global footprint 🌍
-              </p>
-              <div className="flex flex-wrap gap-2 mb-8">
-                <span className="inline-flex rounded-full bg-primary/10 text-foreground px-4 py-2 text-sm font-semibold border border-primary/20">Trusted worldwide 🌍</span>
-                <span className="inline-flex rounded-full bg-primary/10 text-foreground px-4 py-2 text-sm font-semibold border border-primary/20">Three continents 🗺️</span>
-                <span className="inline-flex rounded-full bg-primary/10 text-foreground px-4 py-2 text-sm font-semibold border border-primary/20">Training programs 📚</span>
-              </div>
-              <Button
-                onClick={() => document.querySelector("#booking")?.scrollIntoView({ behavior: "smooth" })}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-10 py-6 text-lg font-semibold shadow-lg shadow-primary/20"
-              >
-                Book a consultation with Dr. Husnain Shah 📅
+              <Button onClick={() => document.querySelector("#booking")?.scrollIntoView({ behavior: "smooth" })} className="bg-gold text-gold-foreground hover:bg-gold/90 rounded-full px-10 py-6 text-lg font-semibold shadow-lg">
+                Book a consultation with Dr. Husnain Shah
               </Button>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -181,155 +157,128 @@ export default function DoctorSection() {
   }
 
   return (
-    <div
-      id="doctor"
-      ref={wrapperRef}
-      className="relative bg-primary/10"
-      style={{ minHeight: tallHeight }}
-    >
+    <div id="doctor" ref={wrapperRef} className={`relative ${gradientClass}`} style={{ minHeight: tallHeight }}>
       <div className="sticky top-0 min-h-screen w-full flex flex-col justify-center py-12 px-4 overflow-hidden">
-        <div className="container mx-auto max-w-6xl flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12">
-          {/* Portrait + progress bar – same width */}
-          <div className="shrink-0 w-full max-w-[220px] sm:max-w-[260px] lg:max-w-[280px] flex flex-col items-center lg:items-start">
+        <div className="container mx-auto max-w-6xl flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-10">
+          {/* Left: first image, grows with scroll */}
+          <div className="shrink-0 flex flex-col items-center lg:items-end">
             <motion.div
-              className="relative flex justify-center lg:block w-full"
-              style={{
-                scale: 0.92 + progress * 0.16,
-                y: progress * 12,
-              }}
+              className={`${LEFT_IMG_BASE} rounded-2xl overflow-hidden border-2 border-white/30 shadow-lg`}
+              style={{ scale: leftScale }}
+              transition={{ type: "linear", duration: 0.1 }}
             >
-              <div className="aspect-[3/4] w-full max-h-[55vh] rounded-2xl bg-cream overflow-hidden flex items-end justify-center">
-                <img
-                  src="/dr-husnain.jpeg"
-                  alt="Dr. Husnain Shah"
-                  className="w-full h-full object-cover object-center"
-                />
-              </div>
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 rounded-full bg-gold/20 blur-2xl pointer-events-none" />
+              <img src={DOCTOR_IMAGES[0].src} alt={DOCTOR_IMAGES[0].alt} className="w-full h-full object-cover" />
             </motion.div>
-            {/* Progress indicator – under portrait, same width as photo */}
-            <div className="w-full mt-4">
-              <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
-                <div
-                  className="h-full bg-primary rounded-full origin-left transition-transform duration-75 ease-out"
-                  style={{ transform: `scaleX(${progress})`, width: "100%" }}
-                />
+            <div className="w-full max-w-[200px] sm:max-w-[240px] mt-4">
+              <div className="h-1 w-full rounded-full bg-white/20 overflow-hidden">
+                <div className="h-full bg-gold rounded-full origin-left transition-transform duration-75 ease-out" style={{ transform: `scaleX(${progress})`, width: "100%" }} />
               </div>
             </div>
           </div>
 
-          {/* Step content – transparent, text floats freely */}
-          <div className="relative flex-1 min-w-0 min-h-[280px] flex flex-col justify-center font-rounded">
-            {STEP_RANGES.map(([start, end], i) => {
-              const opacity = getStepOpacity(progress, start, end);
-              const y = getStepY(progress, start, end);
+          {/* Right: text area + revealing collage */}
+          <div className="relative flex-1 min-w-0 min-h-[420px] sm:min-h-[470px] py-14 px-10 sm:py-16 sm:px-14">
+            {/* Images 2–6 reveal as a layered collage on desktop; once visible they stay */}
+            {DOCTOR_IMAGES.slice(1, 6).map((img, idx) => {
+              const show = stepIndex >= idx + 1; // image 2 at step 1, image 3 at step 2, ...
+              const positions = [
+                "top-2 right-44 -rotate-6",
+                "top-16 right-10 rotate-3",
+                "top-48 right-40 rotate-6",
+                "bottom-20 right-8 -rotate-4",
+                "bottom-2 right-44 rotate-5",
+              ];
               return (
                 <motion.div
-                  key={i}
-                  className="absolute inset-0 flex flex-col justify-center"
-                  style={{
-                    opacity,
-                    y,
-                    pointerEvents: opacity > 0.5 ? "auto" : "none",
-                    visibility: opacity < 0.01 ? "hidden" : "visible",
-                  }}
+                  key={img.id}
+                  className={`hidden lg:block absolute rounded-xl overflow-hidden border-2 border-white/30 shadow-lg bg-white/10 ${IMG_SIZE} ${positions[idx]}`}
+                  initial={false}
+                  animate={{ opacity: show ? 1 : 0, scale: show ? 1 : 0.9, y: show ? 0 : 8 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  style={{ zIndex: 5 + idx }}
                 >
-                  {i === 0 && (
-                    <>
-                      <p className="text-sm lg:text-base font-semibold tracking-[0.2em] uppercase text-primary mb-4 opacity-90">
-                        Meet the Doctor 👋
-                      </p>
-                      <h2 className="font-rounded text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-3 tracking-tight leading-[1.1]">
-                        Dr. Husnain Shah
-                      </h2>
-                      <p className="text-muted-foreground text-lg lg:text-xl font-medium tracking-wide">
-                        Aesthetic Medicine Specialist ✨
-                      </p>
-                    </>
-                  )}
-                  {i === 1 && (
-                    <>
-                      <div className="flex flex-wrap gap-3 mb-6">
-                        {badges.map((badge) => (
-                          <span
-                            key={badge.label}
-                            className="inline-flex items-center gap-2 bg-primary/10 text-foreground rounded-full px-5 py-2.5 text-base font-semibold border border-primary/20"
-                          >
-                            <badge.icon className="h-5 w-5 text-primary" />
-                            {badge.label}
-                          </span>
-                        ))}
-                      </div>
-                      <p className="text-foreground/90 text-lg lg:text-xl leading-relaxed max-w-xl">
-                        <span className="font-semibold text-foreground">Over 15 years</span> in aesthetic medicine. Director of the International Education Board of
-                        Aesthetics, leading training programs across three continents. 🌍
-                      </p>
-                    </>
-                  )}
-                  {i === 2 && (
-                    <blockquote className="border-l-4 border-primary pl-8 pr-4 py-2 text-foreground leading-relaxed text-xl lg:text-2xl italic max-w-xl">
-                      <span className="text-primary font-semibold not-italic">&ldquo;My philosophy is simple:</span> enhance your natural beauty with precision,
-                      safety, and artistry. Every treatment plan is as unique as the individual. ✨&rdquo;
-                    </blockquote>
-                  )}
-                  {i === 3 && (
-                    <>
-                      <p className="text-base font-semibold tracking-[0.15em] uppercase text-primary mb-4 opacity-90">
-                        Key focus 🎯
-                      </p>
-                      <div className="flex flex-wrap gap-3 mb-4">
-                        <span className="inline-flex items-center rounded-full bg-primary/10 text-foreground px-5 py-2.5 text-base font-semibold border border-primary/20">
-                          Evidence-based practice 🔬
-                        </span>
-                        <span className="inline-flex items-center rounded-full bg-primary/10 text-foreground px-5 py-2.5 text-base font-semibold border border-primary/20">
-                          Bespoke treatment plans ✨
-                        </span>
-                        <span className="inline-flex items-center rounded-full bg-primary/10 text-foreground px-5 py-2.5 text-base font-semibold border border-primary/20">
-                          International standards 🌍
-                        </span>
-                        <span className="inline-flex items-center rounded-full bg-primary/10 text-foreground px-5 py-2.5 text-base font-semibold border border-primary/20">
-                          Safety & artistry ❤️
-                        </span>
-                      </div>
-                      <p className="text-foreground/90 text-lg leading-relaxed max-w-xl">
-                        Every consultation is tailored with precision and care. ❤️
-                      </p>
-                    </>
-                  )}
-                  {i === 4 && (
-                    <>
-                      <p className="text-base font-semibold tracking-[0.15em] uppercase text-primary mb-4 opacity-90">
-                        Global footprint 🌍
-                      </p>
-                      <div className="flex flex-wrap gap-3">
-                        <span className="inline-flex items-center rounded-full bg-primary/10 text-foreground px-5 py-2.5 text-base font-semibold border border-primary/20">
-                          Trusted worldwide 🌍
-                        </span>
-                        <span className="inline-flex items-center rounded-full bg-primary/10 text-foreground px-5 py-2.5 text-base font-semibold border border-primary/20">
-                          Three continents 🗺️
-                        </span>
-                        <span className="inline-flex items-center rounded-full bg-primary/10 text-foreground px-5 py-2.5 text-base font-semibold border border-primary/20">
-                          Training programs 📚
-                        </span>
-                        <span className="inline-flex items-center rounded-full bg-primary/10 text-foreground px-5 py-2.5 text-base font-semibold border border-primary/20">
-                          Patients & professionals 👥
-                        </span>
-                      </div>
-                    </>
-                  )}
-                  {i === 5 && (
-                    <div className="pt-2">
-                      <Button
-                        onClick={() => document.querySelector("#booking")?.scrollIntoView({ behavior: "smooth" })}
-                        className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-10 py-6 text-lg font-semibold shadow-lg shadow-primary/20"
-                      >
-                        Book a consultation with Dr. Husnain Shah 📅
-                      </Button>
-                    </div>
-                  )}
+                  <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
                 </motion.div>
               );
             })}
+
+            {/* Step-driven text content */}
+            <div className="relative z-10 min-h-[250px] max-w-[500px] lg:max-w-[540px] mx-auto lg:mx-0 lg:pr-[320px] px-4 sm:px-6 lg:px-0 flex flex-col justify-center items-start text-left font-rounded">
+              {STEP_RANGES.map(([start, end], i) => {
+                const opacity = getStepOpacity(progress, start, end);
+                const y = getStepY(progress, start, end);
+                return (
+                  <motion.div
+                    key={i}
+                    className="absolute inset-0 flex flex-col justify-center px-0 sm:px-4"
+                    style={{
+                      opacity,
+                      y,
+                      pointerEvents: opacity > 0.5 ? "auto" : "none",
+                      visibility: opacity < 0.01 ? "hidden" : "visible",
+                    }}
+                  >
+                    {i === 0 && (
+                      <>
+                        <p className={`text-sm lg:text-base font-semibold tracking-[0.2em] uppercase ${sectionMuted} mb-4`}>Meet the Doctor</p>
+                        <h2 className="font-rounded text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-3 tracking-tight leading-[1.1]">Dr. Husnain Shah</h2>
+                        <p className={`${sectionMuted} text-lg lg:text-xl font-medium tracking-wide`}>Aesthetic Medicine Specialist</p>
+                      </>
+                    )}
+                    {i === 1 && (
+                      <>
+                      <div className="flex flex-wrap justify-start gap-3 mb-6">
+                          {badges.map((badge) => (
+                            <span key={badge.label} className="inline-flex items-center gap-2 bg-white/15 text-white rounded-full px-5 py-2.5 text-base font-semibold border border-white/25">
+                              <badge.icon className="h-5 w-5" />
+                              {badge.label}
+                            </span>
+                          ))}
+                        </div>
+                        <p className={`${sectionLight} text-lg lg:text-xl leading-relaxed max-w-xl`}>
+                          <span className="font-semibold">Over 15 years</span> in aesthetic medicine. Director of the International Education Board of Aesthetics, leading training programs across three continents.
+                        </p>
+                      </>
+                    )}
+                    {i === 2 && (
+                      <blockquote className="border-l-4 border-gold pl-8 pr-4 py-2 text-white leading-relaxed text-xl lg:text-2xl italic max-w-xl">
+                        <span className="text-gold font-semibold not-italic">&ldquo;My philosophy is simple:</span> enhance your natural beauty with precision, safety, and artistry. Every treatment plan is as unique as the individual.&rdquo;
+                      </blockquote>
+                    )}
+                    {i === 3 && (
+                      <>
+                        <p className={`text-base font-semibold tracking-[0.15em] uppercase ${sectionMuted} mb-4`}>Key focus</p>
+                      <div className="flex flex-wrap justify-start gap-3 mb-4">
+                          <span className="inline-flex items-center rounded-full bg-white/15 text-white px-5 py-2.5 text-base font-semibold border border-white/25">Evidence-based practice</span>
+                          <span className="inline-flex items-center rounded-full bg-white/15 text-white px-5 py-2.5 text-base font-semibold border border-white/25">Bespoke treatment plans</span>
+                          <span className="inline-flex items-center rounded-full bg-white/15 text-white px-5 py-2.5 text-base font-semibold border border-white/25">International standards</span>
+                          <span className="inline-flex items-center rounded-full bg-white/15 text-white px-5 py-2.5 text-base font-semibold border border-white/25">Safety & artistry</span>
+                        </div>
+                        <p className={`${sectionLight} text-lg leading-relaxed max-w-xl`}>Every consultation is tailored with precision and care.</p>
+                      </>
+                    )}
+                    {i === 4 && (
+                      <>
+                        <p className={`text-base font-semibold tracking-[0.15em] uppercase ${sectionMuted} mb-4`}>Global footprint</p>
+                        <div className="flex flex-wrap justify-start gap-3">
+                          <span className="inline-flex items-center rounded-full bg-white/15 text-white px-5 py-2.5 text-base font-semibold border border-white/25">Trusted worldwide</span>
+                          <span className="inline-flex items-center rounded-full bg-white/15 text-white px-5 py-2.5 text-base font-semibold border border-white/25">Three continents</span>
+                          <span className="inline-flex items-center rounded-full bg-white/15 text-white px-5 py-2.5 text-base font-semibold border border-white/25">Training programs</span>
+                          <span className="inline-flex items-center rounded-full bg-white/15 text-white px-5 py-2.5 text-base font-semibold border border-white/25">Patients & professionals</span>
+                        </div>
+                      </>
+                    )}
+                    {i === 5 && (
+                      <div className="pt-2">
+                        <Button onClick={() => document.querySelector("#booking")?.scrollIntoView({ behavior: "smooth" })} className="bg-gold text-gold-foreground hover:bg-gold/90 rounded-full px-10 py-6 text-lg font-semibold shadow-lg">
+                          Book a consultation with Dr. Husnain Shah
+                        </Button>
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
