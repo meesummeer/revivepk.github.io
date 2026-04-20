@@ -4,14 +4,11 @@ type TeamMember = { name: string; role: string; image?: string };
 
 const branches: { name: string; members: TeamMember[] }[] = [
   { name: "Bahadurabad", members: [
-    { name: "Bushra Waseem", role: "Floor Manager" },
-    { name: "Dr. Hafsa", role: "Aesthetic Physician" },
-    { name: "Dr. Fatima", role: "Aesthetic Physician" },
+    { name: "Bushra Khan", role: "Floor Manager" },
+    { name: "Dr. Maham", role: "Aesthetic Physician" },
+    { name: "Dr. Mehwish", role: "Aesthetic Physician" },
+    { name: "Nadeem", role: "Aesthetic Nurse" },
     { name: "Haleema", role: "Aesthetic Nurse" },
-  ]},
-  { name: "DHA", members: [
-    { name: "Tariq", role: "Aesthetic Nurse" },
-    { name: "Shumaila", role: "Aesthetic Nurse" },
   ]},
 ];
 
@@ -67,7 +64,10 @@ const TeamSection = () => (
                   <MemberCard name={branch.members[1].name} role={branch.members[1].role} image={branch.members[1].image} />
                   <MemberCard name={branch.members[2].name} role={branch.members[2].role} image={branch.members[2].image} />
                 </div>
-                <MemberCard name={branch.members[3].name} role={branch.members[3].role} image={branch.members[3].image} />
+                <div className="grid grid-cols-2 gap-3">
+                  <MemberCard name={branch.members[3].name} role={branch.members[3].role} image={branch.members[3].image} />
+                  <MemberCard name={branch.members[4].name} role={branch.members[4].role} image={branch.members[4].image} />
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3">

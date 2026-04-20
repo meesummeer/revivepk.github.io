@@ -10,11 +10,14 @@ const badges = [
 ];
 
 /** 6 placeholder images: 1 left (grows), 2-6 reveal into a collage on the right. */
-const DOCTOR_IMAGES = Array.from({ length: 6 }, (_, i) => ({
-  id: i,
-  src: `https://placehold.co/140x140/1e3a3f/e5e7eb?text=${i + 1}`,
-  alt: `Photo ${i + 1}`,
-}));
+const DOCTOR_IMAGES = [
+  { id: 0, src: "/pic1.jpeg", alt: "Doctor image 1" },
+  { id: 1, src: "/pic2.jpeg", alt: "Doctor image 2" },
+  { id: 2, src: "/pic3.jpeg", alt: "Doctor image 3" },
+  { id: 3, src: "/pic4.jpeg", alt: "Doctor image 4" },
+  { id: 4, src: "/pic5.jpeg", alt: "Doctor image 5" },
+  { id: 5, src: "/pic6.jpeg", alt: "Doctor image 6" },
+];
 
 const STEP_RANGES: [number, number][] = [
   [0, 0.18],
@@ -120,6 +123,7 @@ export default function DoctorSection() {
 
   const stepIndex = getStepIndex(progress);
   const leftScale = reduceMotion ? 1 : 1 + progress * 0.28;
+  const firstImageReveal = reduceMotion ? 1 : Math.max(0, Math.min(1, (progress - 0.04) / 0.12));
 
   if (reduceMotion) {
     return (
@@ -164,7 +168,7 @@ export default function DoctorSection() {
           <div className="shrink-0 flex flex-col items-center lg:items-end">
             <motion.div
               className={`${LEFT_IMG_BASE} rounded-2xl overflow-hidden border-2 border-white/30 shadow-lg`}
-              style={{ scale: leftScale }}
+              style={{ scale: leftScale, opacity: firstImageReveal }}
               transition={{ type: "linear", duration: 0.1 }}
             >
               <img src={DOCTOR_IMAGES[0].src} alt={DOCTOR_IMAGES[0].alt} className="w-full h-full object-cover" />

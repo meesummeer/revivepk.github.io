@@ -4,7 +4,6 @@ import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import DoctorSection from "@/components/landing/DoctorSection";
 import ServicesSection from "@/components/landing/ServicesSection";
-import PromotionsSection from "@/components/landing/PromotionsSection";
 import TeamSection from "@/components/landing/TeamSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import ResultsSection from "@/components/landing/ResultsSection";
@@ -37,7 +36,6 @@ const Index = () => {
         <HeroSection scrollProgress={scrollProgress} />
         <DoctorSection />
         <ServicesSection />
-        <PromotionsSection />
         <TeamSection />
         <TestimonialsSection />
         <ResultsSection />
