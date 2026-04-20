@@ -1,61 +1,35 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CheckCircle2 } from "lucide-react";
-import { serviceTitlesForBooking } from "@/data/servicesContent";
-
-const schema = z.object({
-  name: z.string().min(2, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(7, "Phone number is required"),
-  service: z.string().min(1, "Please select a service"),
-  date: z.string().min(1, "Please select a preferred date"),
-});
-
-type FormData = z.infer<typeof schema>;
-
-const services = serviceTitlesForBooking();
-
-const API_BASE = import.meta.env.VITE_API_URL || "";
 
 const BookingSection = () => {
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: { name: "", email: "", phone: "", service: "", date: "" },
-  });
-
-  const onSubmit = async (data: FormData) => {
-    setError(null);
-    try {
-      const res = await fetch(`${API_BASE}/api/booking`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const json = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        setError(json.error || "Something went wrong. Please try again.");
-        return;
-      }
-      setSubmitted(true);
-    } catch {
-      setError("Network error. Please try again.");
+  useEffect(() => {
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      'script[src="https://link.msgsndr.com/js/form_embed.js"]',
+    );
+    if (existingScript) {
+      return;
     }
-  };
+
+    const script = document.createElement("script");
+    script.src = "https://link.msgsndr.com/js/form_embed.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      script.remove();
+    };
+  }, []);
 
   return (
-    <section id="booking" className="py-20 lg:py-28 bg-background">
+    <section id="booking" className="relative py-20 lg:py-28 bg-background overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-60"
+        aria-hidden="true"
+      >
+        <div className="absolute -top-28 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
+      </div>
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="max-w-xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -64,120 +38,68 @@ const BookingSection = () => {
             className="text-center mb-10"
           >
             <p className="text-sm font-sans font-semibold tracking-widest uppercase text-primary mb-3">
-              Get Started 📅
+              Private Consultation 📅
             </p>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Book Your Consultation
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-3 leading-tight">
+              Want to book a private consultation with <span className="whitespace-nowrap">Dr. Husnain</span>?
             </h2>
             <p className="text-muted-foreground">
-              Fill in the form below and our team will be in touch within 24 hours. ✨
+              Select your preferred branch below to continue.
             </p>
           </motion.div>
+          <div className="relative rounded-3xl border border-primary/20 bg-card/95 backdrop-blur-sm shadow-[0_16px_50px_rgba(0,0,0,0.10)] p-6 md:p-8 space-y-6 overflow-hidden">
+            <div
+              className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute -right-16 -top-14 h-40 w-40 rounded-full bg-primary/10 blur-2xl"
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute -left-12 -bottom-16 h-36 w-36 rounded-full bg-gold/10 blur-2xl"
+              aria-hidden="true"
+            />
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-3 rounded-full border border-primary/20 bg-cream/70 px-3 py-1.5">
+                <img src="/logo.png" alt="Revive Healthcare" className="h-7 w-auto object-contain" />
+                <span className="text-xs font-semibold tracking-wide uppercase text-primary">
+                  Private Booking Flow
+                </span>
+              </div>
+              <h3 className="font-serif text-2xl font-bold text-foreground">
+                Select your preferred branch below
+              </h3>
+              <div className="grid gap-2 text-sm text-muted-foreground">
+                <p>
+                  <span className="font-semibold text-foreground">Step 1:</span> Choose your preferred branch and submit the form.
+                </p>
+                <p>
+                  <span className="font-semibold text-foreground">Step 2:</span> You will be redirected to the correct calendar for that branch.
+                </p>
+              </div>
+            </div>
 
-          {submitted ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-16"
-            >
-              <CheckCircle2 className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="font-serif text-2xl font-bold text-foreground mb-2">Thank You! 🙏</h3>
-              <p className="text-muted-foreground">
-                We've received your booking request and will contact you shortly. ✨
-              </p>
-            </motion.div>
-          ) : (
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Your full name" {...field} className="rounded-lg bg-card" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input type="email" placeholder="you@email.com" {...field} className="rounded-lg bg-card" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone</FormLabel>
-                        <FormControl>
-                          <Input type="tel" placeholder="+44 7000 000000" {...field} className="rounded-lg bg-card" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <FormField
-                  control={form.control}
-                  name="service"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Service</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className="rounded-lg bg-card">
-                            <SelectValue placeholder="Select a treatment" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {services.map((s) => (
-                            <SelectItem key={s} value={s}>{s}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="date"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Preferred Date</FormLabel>
-                      <FormControl>
-                        <Input type="date" {...field} className="rounded-lg bg-card" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {error && (
-                <p className="text-sm text-destructive text-center">{error}</p>
-              )}
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-full text-base mt-2"
-                >
-                  Request Consultation 📅
-                </Button>
-              </form>
-            </Form>
-          )}
+            <div className="w-full min-h-[434px] rounded-xl border border-border/70 bg-background p-2 shadow-inner">
+              <iframe
+                src="https://api.leadconnectorhq.com/widget/form/lUr07AMdknR3wuhEtQU8"
+                style={{ width: "100%", height: "100%", border: "none", borderRadius: "8px" }}
+                id="inline-lUr07AMdknR3wuhEtQU8"
+                data-layout="{'id':'INLINE'}"
+                data-trigger-type="alwaysShow"
+                data-trigger-value=""
+                data-activation-type="alwaysActivated"
+                data-activation-value=""
+                data-deactivation-type="neverDeactivate"
+                data-deactivation-value=""
+                data-form-name="Branch Selection Form"
+                data-height="434"
+                data-layout-iframe-id="inline-lUr07AMdknR3wuhEtQU8"
+                data-form-id="lUr07AMdknR3wuhEtQU8"
+                title="Branch Selection Form"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
