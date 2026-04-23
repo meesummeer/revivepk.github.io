@@ -1,10 +1,19 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import HeroAnimatedLogo from "@/components/landing/HeroAnimatedLogo";
+import { RESULT_GALLERY, GALLERY_AUTOPLAY_MS } from "@/data/resultGallery";
+import { BrandLogo } from "@/components/landing/BrandLogo";
 
-const HeroSection = ({ scrollProgress = 0 }: { scrollProgress?: number }) => {
+const HERO_BG = "/herobg.png";
+const WHATSAPP_URL = "https://wa.me/923030008483";
+
+const HeroSection = () => {
+  const navigate = useNavigate();
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [current, setCurrent] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -14,70 +23,132 @@ const HeroSection = ({ scrollProgress = 0 }: { scrollProgress?: number }) => {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  const scrollTo = (id: string) => {
-    document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
-  };
+  const next = useCallback(() => {
+    setCurrent((c) => (c + 1) % RESULT_GALLERY.length);
+  }, []);
+
+  const prev = useCallback(() => {
+    setCurrent((c) => (c - 1 + RESULT_GALLERY.length) % RESULT_GALLERY.length);
+  }, []);
+
+  useEffect(() => {
+    if (isPaused || reduceMotion) return;
+    const timer = setInterval(next, GALLERY_AUTOPLAY_MS);
+    return () => clearInterval(timer);
+  }, [isPaused, next, reduceMotion]);
+
+  const slide = RESULT_GALLERY[current];
 
   return (
-    <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-cream">
-      {/* Decorative gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-gold/10 pointer-events-none" />
-      <div className="absolute top-20 right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl pointer-events-none" />
+    <section className="relative min-h-[100svh] flex items-start overflow-hidden">
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${HERO_BG})` }}
+        aria-hidden
+      />
+      {/* Dark overlay so white text reads clearly on the photo */}
+      <div
+        className="absolute inset-0 z-[1] bg-black/55 pointer-events-none"
+        aria-hidden
+      />
 
-      <div className="container mx-auto px-4 lg:px-8 py-20 lg:py-32 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr,minmax(320px,1fr)] gap-8 lg:gap-12 items-center">
-          <div className="max-w-2xl">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-sm font-rounded font-semibold tracking-widest uppercase text-primary mb-4"
-          >
-            Premium Aesthetic Medicine ✨
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground mb-6"
-          >
-            Where Science Meets{" "}
-            <span className="text-primary italic">Beauty</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-10 max-w-lg"
-          >
-            Experience world-class aesthetic treatments delivered by internationally
-            recognized specialists in a serene, luxurious environment. ✨
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4"
-          >
-            <Button
-              onClick={() => scrollTo("#booking")}
-              size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 text-base"
+      <BrandLogo onHero />
+      <div className="container relative z-10 mx-auto w-full px-4 pt-28 pb-10 sm:pt-32 sm:pb-10 lg:px-8 lg:pb-14 lg:pt-32">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr,minmax(360px,1fr)] gap-6 lg:gap-10 items-start">
+          <div className="max-w-2xl mx-auto lg:mx-0 lg:self-center lg:pl-4 -mt-3 sm:-mt-4">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.05 }}
+              className="tracking-tight leading-[1.2] text-white mb-5"
             >
-              Book Your Consultation 📅
-            </Button>
-            <Button
-              onClick={() => scrollTo("#services")}
-              variant="outline"
-              size="lg"
-              className="rounded-full px-8 text-base border-foreground/20 hover:bg-foreground/5"
+              <span className="block font-sans font-semibold text-3xl sm:text-4xl md:text-4xl lg:text-[2.75rem]">
+                Results that look natural.
+              </span>
+              <span className="block font-serif text-xl sm:text-2xl md:text-2xl lg:text-[2.15rem] font-light italic text-white/95">
+                Precision you can trust.
+              </span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="text-sm sm:text-base md:text-lg text-white/90 leading-relaxed mb-7 max-w-lg"
             >
-              Explore Treatments ✨
-            </Button>
-          </motion.div>
+              Pakistan's new standard in aesthetic excellence.{" "}
+              <span className="whitespace-nowrap">Our results speak for themselves.</span>
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="flex flex-col sm:flex-row gap-3"
+            >
+              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6 text-sm">
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                  Book Your Consultation
+                </a>
+              </Button>
+              <Button
+                onClick={() => navigate("/treatments")}
+                variant="outline"
+                size="lg"
+                className="rounded-full px-6 text-sm border-white/50 bg-white/5 text-white hover:bg-white/15 hover:text-white"
+              >
+                Explore Treatments
+              </Button>
+            </motion.div>
           </div>
-          <div className="hidden lg:flex items-center justify-center pointer-events-auto" style={{ minHeight: "320px" }}>
-            <HeroAnimatedLogo reduceMotion={reduceMotion} />
+          <div
+            id="results"
+            className="w-full max-w-xl mx-auto lg:mx-0 lg:self-start"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <div className="relative rounded-2xl overflow-hidden shadow-lg border border-border bg-card aspect-[4/3] min-h-[260px] sm:min-h-[320px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={slide.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="absolute inset-0"
+                >
+                  <img src={slide.src} alt={slide.alt} className="w-full h-full object-contain" />
+                </motion.div>
+              </AnimatePresence>
+
+              <button
+                type="button"
+                onClick={prev}
+                className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-card/90 backdrop-blur-sm border border-border shadow-md hover:bg-muted transition-colors"
+                aria-label="Previous"
+              >
+                <ChevronLeft className="h-4 w-4 text-foreground" />
+              </button>
+              <button
+                type="button"
+                onClick={next}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-card/90 backdrop-blur-sm border border-border shadow-md hover:bg-muted transition-colors"
+                aria-label="Next"
+              >
+                <ChevronRight className="h-4 w-4 text-foreground" />
+              </button>
+            </div>
+            <div className="flex justify-center gap-2 mt-4">
+              {RESULT_GALLERY.map((_, i) => (
+                <button
+                  key={RESULT_GALLERY[i].id}
+                  type="button"
+                  onClick={() => setCurrent(i)}
+                  className={`h-2 rounded-full transition-all ${
+                    i === current ? "w-6 bg-primary" : "w-2 bg-white/40 hover:bg-white/60"
+                  }`}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

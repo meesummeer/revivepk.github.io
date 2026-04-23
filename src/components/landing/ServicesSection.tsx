@@ -1,122 +1,215 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useId } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { MessageCircle } from "lucide-react";
 import { getServicePanels, type ServicePanel, type ServiceEntry } from "@/data/servicesContent";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-/** Fixed card size used on all slides for consistency. */
-const SERVICE_CARD_SIZE = "w-[12rem] sm:w-[13rem]";
+const servicePanels = getServicePanels();
+const WHATSAPP_URL = "https://wa.me/923030008483";
 
-/** Circular service card: gold ring, icon, title, description. Fixed size, overflow hidden. */
-function ServiceCard({ service }: { service: ServiceEntry }) {
+function ServiceItem({ service }: { service: ServiceEntry }) {
   const Icon = service.icon;
   return (
-    <article className="w-full aspect-square rounded-full flex flex-col items-center justify-center text-center p-5 sm:p-6 border-2 border-gold/40 bg-white/90 shadow-md shadow-gold/10 min-w-0 overflow-hidden">
-      <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-full border-2 border-gold bg-gold/10 text-gold mb-2.5 sm:mb-3">
-        <Icon className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden />
+    <article
+      className={cn(
+        "group border border-chrome-foreground/20 bg-chrome-foreground/[0.06] p-3.5 sm:p-4 transition-colors",
+        "hover:border-gold/45 hover:bg-chrome-foreground/10"
+      )}
+    >
+      <div className="flex gap-3 sm:gap-3.5">
+        <div
+          className="flex h-10 w-10 shrink-0 items-center justify-center border border-gold/35 bg-gold/10 text-gold"
+          aria-hidden
+        >
+          <Icon className="h-5 w-5" strokeWidth={1.5} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <h3 className="font-rounded text-[0.95rem] sm:text-base font-semibold text-chrome-foreground leading-snug">
+            {service.title}
+          </h3>
+          <p className="mt-1.5 text-sm text-chrome-foreground/80 leading-relaxed">{service.description}</p>
+        </div>
       </div>
-      <h4 className="font-rounded text-sm sm:text-base font-bold text-foreground mb-1 sm:mb-1.5 leading-tight line-clamp-2">{service.title}</h4>
-      <p className="text-[0.75rem] sm:text-xs font-semibold text-foreground/90 leading-snug line-clamp-2">{service.description}</p>
     </article>
   );
 }
 
-/** Center-aligned panel: title, symmetric flex wrap (centered), same card size. */
-function PanelContent({ panel }: { panel: ServicePanel }) {
-  return (
-    <div className="flex flex-col items-center justify-center text-center px-4 sm:px-6 lg:px-10 py-6 lg:py-10 w-full max-w-5xl mx-auto">
-      <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-6 sm:mb-8">
-        {panel.title}
-      </h3>
-      <div className="relative flex flex-wrap justify-center gap-4 sm:gap-5 mb-8 w-full max-w-[56rem] mx-auto">
-        {panel.services.map((service) => (
-          <div key={service.id} className={SERVICE_CARD_SIZE}>
-            <ServiceCard service={service} />
-          </div>
-        ))}
-      </div>
-      <Button
-        onClick={() => document.querySelector("#booking")?.scrollIntoView({ behavior: "smooth" })}
-        className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 py-5 text-base font-semibold border-2 border-gold/50 shadow-md shadow-gold/10"
-      >
-        Book consultation
-      </Button>
-    </div>
-  );
-}
-
-function NavPill({
-  panel,
-  index,
-  activeIndex,
-  onNavigate,
+function CategoryTab({
+  id,
+  controlsId,
+  label,
+  isActive,
+  onSelect,
 }: {
-  panel: ServicePanel;
-  index: number;
-  activeIndex: number;
-  onNavigate: (index: number) => void;
+  id: string;
+  controlsId: string;
+  label: string;
+  isActive: boolean;
+  onSelect: () => void;
 }) {
   return (
     <button
       type="button"
-      onClick={() => onNavigate(index)}
-      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors border-2 ${
-        index === activeIndex
-          ? "bg-gold text-gold-foreground border-gold shadow-md shadow-gold/20"
-          : "bg-white/80 text-foreground border-gold/40 hover:bg-gold/10 hover:border-gold/60"
-      }`}
-      aria-label={`Go to ${panel.title}`}
-      aria-current={index === activeIndex ? "step" : undefined}
+      role="tab"
+      id={id}
+      aria-selected={isActive}
+      aria-controls={controlsId}
+      onClick={onSelect}
+      className={cn(
+        "shrink-0 rounded-none border-b-2 px-3 py-2.5 text-left text-sm sm:px-4 sm:py-3 sm:text-base font-semibold font-rounded transition-colors",
+        isActive
+          ? "border-gold text-chrome-foreground"
+          : "border-transparent text-chrome-foreground/55 hover:text-chrome-foreground/90"
+      )}
     >
-      {panel.title}
+      {label}
     </button>
   );
 }
 
-const servicePanels = getServicePanels();
+function ServicePanelView({ panel, showMotion }: { panel: ServicePanel; showMotion: boolean }) {
+  const content = (
+    <div className="w-full max-w-5xl mx-auto">
+      <p className="text-xs sm:text-sm font-medium text-chrome-foreground/60 mb-4 sm:mb-5">
+        {panel.services.length} treatment{panel.services.length === 1 ? "" : "s"} in this category
+      </p>
+      <div className="grid gap-2.5 sm:gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {panel.services.map((s) => (
+          <ServiceItem key={s.id} service={s} />
+        ))}
+      </div>
+    </div>
+  );
+
+  if (!showMotion) {
+    return <div className="w-full">{content}</div>;
+  }
+
+  return (
+    <motion.div
+      key={panel.id}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+      className="w-full"
+    >
+      {content}
+    </motion.div>
+  );
+}
+
+function ServicesInteractive() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const reduceMotion = useReducedMotion();
+  const baseId = useId();
+  const tablistId = `${baseId}-tabs`;
+  const panelId = `${baseId}-panel`;
+  const panel = servicePanels[activeIndex];
+
+  return (
+    <div>
+      <nav
+        className="mb-6 sm:mb-8 border-b border-chrome-foreground/15 -mx-4 px-2 sm:mx-0 sm:px-0"
+        role="tablist"
+        id={tablistId}
+        aria-label="Service categories"
+      >
+        <div className="flex w-full min-w-0 flex-wrap sm:flex-nowrap sm:justify-center gap-x-0 gap-y-0 overflow-x-auto sm:overflow-visible pb-px [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:[-ms-overflow-style:auto] sm:[scrollbar-width:auto]">
+          {servicePanels.map((p, i) => (
+            <CategoryTab
+              key={p.id}
+              id={`${baseId}-tab-${p.id}`}
+              controlsId={panelId}
+              label={p.title}
+              isActive={i === activeIndex}
+              onSelect={() => setActiveIndex(i)}
+            />
+          ))}
+        </div>
+      </nav>
+
+      <div
+        role="tabpanel"
+        id={panelId}
+        aria-labelledby={`${baseId}-tab-${panel.id}`}
+      >
+        <ServicePanelView panel={panel} showMotion={!reduceMotion} />
+      </div>
+    </div>
+  );
+}
+
+function ServicesAllCategoriesStack() {
+  return (
+    <div className="space-y-12 sm:space-y-14">
+      {servicePanels.map((panel) => (
+        <div key={panel.id} className="pt-2 border-t border-chrome-foreground/15 first:border-0 first:pt-0 first:mt-0">
+          <h3 className="font-rounded text-xl sm:text-2xl font-bold text-chrome-foreground tracking-tight mb-4 sm:mb-5">
+            {panel.title}
+          </h3>
+          <div className="grid gap-2.5 sm:gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {panel.services.map((s) => (
+              <ServiceItem key={s.id} service={s} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function ServicesSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
   const [reduceMotion, setReduceMotion] = useState(false);
-  const N = servicePanels.length;
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReduceMotion(mq.matches);
-    const handler = () => setReduceMotion(mq.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+    const h = () => setReduceMotion(mq.matches);
+    mq.addEventListener("change", h);
+    return () => mq.removeEventListener("change", h);
   }, []);
 
-  /** Reduced-motion: vertical stack of all panels */
-  if (reduceMotion) {
-    return (
-      <section id="services" className="py-20 lg:py-28 bg-cream font-rounded">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-6">Treatments & Services</h2>
-          </div>
-          <div className="space-y-16 lg:space-y-20">
-            {servicePanels.map((panel) => (
-              <div key={panel.id} className="border-b border-border pb-12 last:border-b-0 last:pb-0">
-                <PanelContent panel={panel} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section id="services" className="py-20 lg:py-28 bg-cream font-rounded">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-8">
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground">Treatments & Services</h2>
-        </div>
-        <PanelContent panel={servicePanels[activeIndex]} />
-        <div className="flex justify-center items-center gap-3 flex-wrap mt-8">
-          {servicePanels.map((panel, i) => (
-            <NavPill key={panel.id} panel={panel} index={i} activeIndex={activeIndex} onNavigate={setActiveIndex} />
-          ))}
+    <section id="services" className="relative bg-chrome text-chrome-foreground font-rounded overflow-hidden">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-12 sm:pt-14 sm:pb-14 lg:pt-16 lg:pb-20">
+        <motion.header
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.45 }}
+          className="mb-8 sm:mb-10 max-w-2xl"
+        >
+          <h2 className="text-3xl sm:text-4xl lg:text-[2.4rem] font-bold tracking-tight leading-[1.12] text-chrome-foreground">
+            Explore our range of treatments.
+          </h2>
+          <p className="mt-3 text-base sm:text-lg text-chrome-foreground/85 font-medium leading-relaxed">
+            Designed to help you look and feel your best.
+          </p>
+        </motion.header>
+
+        {reduceMotion ? <ServicesAllCategoriesStack /> : <ServicesInteractive />}
+
+        <div className="mt-10 sm:mt-12 text-center">
+          <p className="text-chrome-foreground/85 text-sm sm:text-base font-medium mb-4">
+            Not sure where to start? Message us on WhatsApp&mdash;we&rsquo;ll guide you to the perfect option.
+          </p>
+          <div className="flex justify-center">
+          <Button
+            asChild
+            className="h-12 rounded-full bg-gold text-gold-foreground hover:bg-gold/90 px-8 text-base font-semibold shadow-lg"
+          >
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-2"
+            >
+              <MessageCircle className="h-5 w-5" aria-hidden />
+              Message us on WhatsApp
+            </a>
+          </Button>
+          </div>
         </div>
       </div>
     </section>

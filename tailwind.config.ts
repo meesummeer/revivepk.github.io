@@ -16,7 +16,7 @@ export default {
     extend: {
       fontFamily: {
         serif: ["Playfair Display", "serif"],
-        sans: ["DM Sans", "sans-serif"],
+        sans: ["Nunito", "sans-serif"],
         rounded: ["Nunito", "sans-serif"],
       },
       colors: {
@@ -63,6 +63,10 @@ export default {
         },
         ivory: "hsl(var(--ivory))",
         cream: "hsl(var(--cream))",
+        chrome: {
+          DEFAULT: "hsl(var(--chrome))",
+          foreground: "hsl(var(--chrome-foreground))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -81,7 +85,7 @@ export default {
       },
       backgroundImage: {
         "dark-emerald-gradient":
-          "linear-gradient(180deg, #0d3329 0%, #0f4c3a 50%, #115e59 100%)",
+          "linear-gradient(165deg, hsl(168 58% 26%) 0%, hsl(168 62% 34%) 42%, hsl(172 55% 42%) 100%)",
       },
       keyframes: {
         "accordion-down": {

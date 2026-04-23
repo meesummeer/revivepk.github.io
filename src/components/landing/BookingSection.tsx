@@ -1,105 +1,68 @@
-import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { Phone, MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const WHATSAPP_HREF = "https://wa.me/923030008483";
 
 const BookingSection = () => {
-  useEffect(() => {
-    const existingScript = document.querySelector<HTMLScriptElement>(
-      'script[src="https://link.msgsndr.com/js/form_embed.js"]',
-    );
-    if (existingScript) {
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://link.msgsndr.com/js/form_embed.js";
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      script.remove();
-    };
-  }, []);
-
   return (
     <section id="booking" className="relative py-20 lg:py-28 bg-background overflow-hidden">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-60"
-        aria-hidden="true"
-      >
+      <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden>
         <div className="absolute -top-28 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
+        <div className="absolute bottom-0 right-0 h-56 w-56 rounded-full bg-gold/15 blur-3xl" />
       </div>
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="max-w-3xl mx-auto">
+      <div className="container relative z-10 mx-auto px-4 lg:px-8">
+        <div className="max-w-2xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-10"
+            className="mb-8"
           >
-            <p className="text-sm font-sans font-semibold tracking-widest uppercase text-primary mb-3">
-              Private Consultation 📅
-            </p>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-3 leading-tight">
-              Want to book a private consultation with <span className="whitespace-nowrap">Dr. Husnain</span>?
+            <h2 className="font-rounded text-3xl sm:text-4xl md:text-4xl lg:text-[2.5rem] font-bold text-foreground tracking-tight leading-[1.2] mb-4">
+              You&rsquo;ve seen the results our clients are getting.
+              <span className="block mt-1">Now let&rsquo;s find what works for you.</span>
             </h2>
-            <p className="text-muted-foreground">
-              Select your preferred branch below to continue.
+            <p className="text-muted-foreground text-base sm:text-lg font-medium max-w-2xl mx-auto leading-relaxed">
+              Whether it&rsquo;s a small concern or a complete skin plan, our team will guide you honestly &mdash; with
+              treatments that actually suit your skin.
+              <span className="block mt-2">Message us on WhatsApp and we&rsquo;ll help you get started.</span>
             </p>
           </motion.div>
-          <div className="relative rounded-3xl border border-primary/20 bg-card/95 backdrop-blur-sm shadow-[0_16px_50px_rgba(0,0,0,0.10)] p-6 md:p-8 space-y-6 overflow-hidden">
-            <div
-              className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute -right-16 -top-14 h-40 w-40 rounded-full bg-primary/10 blur-2xl"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute -left-12 -bottom-16 h-36 w-36 rounded-full bg-gold/10 blur-2xl"
-              aria-hidden="true"
-            />
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-3 rounded-full border border-primary/20 bg-cream/70 px-3 py-1.5">
-                <img src="/logo.png" alt="Revive Healthcare" className="h-7 w-auto object-contain" />
-                <span className="text-xs font-semibold tracking-wide uppercase text-primary">
-                  Private Booking Flow
-                </span>
-              </div>
-              <h3 className="font-serif text-2xl font-bold text-foreground">
-                Select your preferred branch below
-              </h3>
-              <div className="grid gap-2 text-sm text-muted-foreground">
-                <p>
-                  <span className="font-semibold text-foreground">Step 1:</span> Choose your preferred branch and submit the form.
-                </p>
-                <p>
-                  <span className="font-semibold text-foreground">Step 2:</span> You will be redirected to the correct calendar for that branch.
-                </p>
-              </div>
-            </div>
 
-            <div className="w-full min-h-[434px] rounded-xl border border-border/70 bg-background p-2 shadow-inner">
-              <iframe
-                src="https://api.leadconnectorhq.com/widget/form/lUr07AMdknR3wuhEtQU8"
-                style={{ width: "100%", height: "100%", border: "none", borderRadius: "8px" }}
-                id="inline-lUr07AMdknR3wuhEtQU8"
-                data-layout="{'id':'INLINE'}"
-                data-trigger-type="alwaysShow"
-                data-trigger-value=""
-                data-activation-type="alwaysActivated"
-                data-activation-value=""
-                data-deactivation-type="neverDeactivate"
-                data-deactivation-value=""
-                data-form-name="Branch Selection Form"
-                data-height="434"
-                data-layout-iframe-id="inline-lUr07AMdknR3wuhEtQU8"
-                data-form-id="lUr07AMdknR3wuhEtQU8"
-                title="Branch Selection Form"
-              />
-            </div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.08 }}
+            className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4"
+          >
+            <Button
+              asChild
+              className="h-12 min-w-[11rem] rounded-full bg-primary px-8 text-base font-semibold font-rounded text-primary-foreground shadow-md hover:bg-primary/90"
+            >
+              <a href={WHATSAPP_HREF} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2">
+                <Phone className="h-5 w-5 shrink-0" aria-hidden />
+                Book Now
+              </a>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="h-12 min-w-[11rem] rounded-full border-2 border-[#25D366] bg-[#25D366] px-8 text-base font-semibold font-rounded text-white shadow-md hover:bg-[#20bd5a] hover:text-white hover:border-[#20bd5a] focus-visible:ring-[#25D366]"
+            >
+              <a
+                href={WHATSAPP_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2"
+              >
+                <MessageCircle className="h-5 w-5 shrink-0" aria-hidden />
+                WhatsApp
+              </a>
+            </Button>
+          </motion.div>
         </div>
       </div>
     </section>
