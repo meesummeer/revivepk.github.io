@@ -101,7 +101,7 @@ const Navbar = () => {
       )}
     >
       <nav
-        className="container relative mx-auto flex min-h-10 items-center justify-between gap-2 sm:min-h-12 md:min-h-14"
+        className="container relative mx-auto flex min-h-10 items-center justify-between gap-2 sm:min-h-12 md:min-h-[3.25rem] lg:min-h-16"
         aria-label="Main navigation"
       >
         <Link
@@ -112,7 +112,7 @@ const Navbar = () => {
           <img
             src="/logo.png"
             alt=""
-            className="h-9 w-auto object-contain sm:h-10 md:h-11"
+            className="h-10 w-auto object-contain sm:h-11 md:h-12 lg:h-14"
             aria-hidden
           />
         </Link>
@@ -125,20 +125,22 @@ const Navbar = () => {
               : "border-white/30 bg-white/15 shadow-md backdrop-blur-md"
           )}
         >
-          <ul className="flex max-w-full flex-wrap items-center justify-center gap-y-1">
+          <ul className="flex max-w-full flex-nowrap items-center justify-center gap-y-0">
             {navLinkGroups.map((group, groupIndex) => (
               <Fragment key={groupIndex}>
                 {groupIndex > 0 && (
                   <li
-                    className={cn(
-                      "mx-1 h-4 w-px list-none sm:mx-1.5 sm:h-5",
-                      isOtherPage && "bg-border/70",
-                      isHome && !homeTextDark && "bg-white/40",
-                      homeTextDark && "bg-neutral-900/30"
-                    )}
                     role="separator"
                     aria-hidden
-                  />
+                    className="mx-1.5 flex shrink-0 list-none items-center justify-center self-center sm:mx-2.5"
+                  >
+                    <span
+                      className={cn(
+                        "block h-6 w-px min-w-[1px] shrink-0 rounded-full sm:h-7",
+                        isOtherPage || homeTextDark ? "bg-foreground/30" : "bg-white/85"
+                      )}
+                    />
+                  </li>
                 )}
                 {group.map((link) => (
                   <li key={link.href} className="shrink-0 list-none">
