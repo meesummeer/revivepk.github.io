@@ -4,8 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RESULT_GALLERY, GALLERY_AUTOPLAY_MS } from "@/data/resultGallery";
-import { BrandLogo } from "@/components/landing/BrandLogo";
-
 const HERO_BG = "/herobg.png";
 const WHATSAPP_URL = "https://wa.me/923030008483";
 
@@ -52,8 +50,7 @@ const HeroSection = () => {
         aria-hidden
       />
 
-      <BrandLogo onHero />
-      <div className="container relative z-10 mx-auto w-full px-4 pt-28 pb-10 sm:pt-32 sm:pb-10 lg:px-8 lg:pb-14 lg:pt-32">
+      <div className="container relative z-10 mx-auto w-full px-4 pt-24 pb-10 sm:pt-28 sm:pb-10 lg:px-8 lg:pb-14 lg:pt-28">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr,minmax(360px,1fr)] gap-6 lg:gap-10 items-start">
           <div className="max-w-2xl mx-auto lg:mx-0 lg:self-center lg:pl-4 -mt-3 sm:-mt-4">
             <motion.h1

@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -91,23 +91,36 @@ const Navbar = () => {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 w-full -translate-y-px transition-colors duration-200",
-        "px-3 pt-5 pb-2 lg:px-6",
+        "fixed top-0 left-0 right-0 z-50 w-full transition-colors duration-200",
+        "px-3 pt-3 pb-2 sm:pt-4 lg:px-6",
         isOtherPage
           ? "border-b border-white/10 bg-chrome text-chrome-foreground"
-          : "border-b-0 bg-transparent shadow-none"
+          : homeTextDark
+            ? "border-b border-border/60 bg-cream/95 text-chrome-foreground shadow-sm backdrop-blur-md"
+            : "border-b border-white/10 bg-black/30 text-white shadow-sm backdrop-blur-md"
       )}
     >
       <nav
-        className="container relative mx-auto flex min-h-10 items-end justify-between gap-2 pb-0.5 sm:min-h-12 md:min-h-14"
+        className="container relative mx-auto flex min-h-10 items-center justify-between gap-2 sm:min-h-12 md:min-h-14"
         aria-label="Main navigation"
       >
-        <div className="hidden min-w-0 flex-1 self-stretch md:block" aria-hidden />
+        <Link
+          to="/"
+          className="relative z-20 flex shrink-0 items-center self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-md"
+          aria-label="Revive Healthcare - Home"
+        >
+          <img
+            src="/logo.png"
+            alt=""
+            className="h-9 w-auto object-contain sm:h-10 md:h-11"
+            aria-hidden
+          />
+        </Link>
         <div
           className={cn(
-            "absolute bottom-0.5 left-1/2 z-30 hidden w-max max-w-[calc(100%-11.5rem)] -translate-x-1/2 sm:max-w-[calc(100%-9rem)] md:flex",
+            "absolute left-1/2 top-1/2 z-30 hidden w-max max-w-[min(100%-10rem,calc(100%-8rem))] -translate-x-1/2 -translate-y-1/2 sm:max-w-[min(100%-12rem,calc(100%-10rem))] md:flex",
             "items-center justify-center rounded-full border px-2 py-1 shadow-md sm:px-2.5 sm:py-1.5",
-            isOtherPage
+            isOtherPage || homeTextDark
               ? "border-border/40 bg-cream/90 shadow-md backdrop-blur-sm"
               : "border-white/30 bg-white/15 shadow-md backdrop-blur-md"
           )}
@@ -160,27 +173,23 @@ const Navbar = () => {
           </ul>
         </div>
 
-        <div className="relative z-20 ml-auto flex flex-1 items-center justify-end gap-2 self-end">
+        <div className="relative z-20 ml-auto flex min-w-0 flex-1 items-center justify-end gap-2">
           <Button
             asChild
-            className="hidden h-10 min-w-[7.5rem] rounded-full bg-primary px-4 text-base font-semibold text-primary-foreground shadow-md hover:bg-primary/90 md:inline-flex"
+            className="h-9 shrink-0 rounded-full bg-[#25D366] px-3 text-xs font-semibold text-white shadow-md hover:bg-[#20bd5a] sm:h-10 sm:px-4 sm:text-sm md:text-base"
           >
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-              Book Now
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5"
+            >
+              <svg className="h-4 w-4 shrink-0 sm:h-[1.125rem] sm:w-[1.125rem]" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.123 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+              </svg>
+              Book a Consult
             </a>
           </Button>
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#25D366] text-white shadow-md transition-colors hover:bg-[#20bd5a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 md:inline-flex"
-            aria-label="WhatsApp"
-            title="WhatsApp"
-          >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.123 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-            </svg>
-          </a>
 
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
@@ -238,9 +247,20 @@ const Navbar = () => {
                     </ul>
                   </div>
                 ))}
-                <Button asChild className="mt-4 h-11 w-full bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90">
-                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-                    Book Now
+                <Button
+                  asChild
+                  className="mt-4 h-11 w-full rounded-full bg-[#25D366] text-base font-semibold text-white hover:bg-[#20bd5a]"
+                >
+                  <a
+                    href={WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2"
+                  >
+                    <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.123 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                    </svg>
+                    Book a Consult
                   </a>
                 </Button>
               </nav>
