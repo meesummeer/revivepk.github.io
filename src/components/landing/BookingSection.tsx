@@ -2,6 +2,13 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 const WHATSAPP_HREF = "https://wa.me/923030008483";
+const BRAND_LOGOS = [
+  { src: "/logos/allergan_logo.jpg", alt: "Allergan" },
+  { src: "/logos/lanluma_logo.jpeg", alt: "Lanluma" },
+  { src: "/logos/maili_logo.jpeg", alt: "Maili" },
+  { src: "/logos/sculptra_logo.jpeg", alt: "Sculptra" },
+  { src: "/logos/xeomin_logo.jpeg", alt: "Xeomin" },
+];
 
 const BookingSection = () => {
   return (
@@ -53,6 +60,25 @@ const BookingSection = () => {
                 Get in touch!
               </a>
             </Button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.5, delay: 0.12 }}
+            className="mt-10"
+          >
+            <p className="mb-4 text-xs sm:text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              Trusted International Brands
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              {BRAND_LOGOS.map((logo) => (
+                <div key={logo.src} className="rounded-2xl bg-white shadow-md p-4">
+                  <img src={logo.src} alt={logo.alt} className="h-10 w-auto object-contain" />
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>
