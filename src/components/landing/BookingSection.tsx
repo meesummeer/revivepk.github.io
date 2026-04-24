@@ -5,7 +5,7 @@ const WHATSAPP_HREF = "https://wa.me/923030008483";
 
 const BookingSection = () => {
   return (
-    <section id="booking" className="relative py-20 lg:py-28 bg-background overflow-hidden">
+    <section id="booking" className="relative scroll-mt-20 py-20 lg:py-28 bg-background overflow-hidden">
       <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden>
         <div className="absolute -top-28 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-56 w-56 rounded-full bg-gold/15 blur-3xl" />

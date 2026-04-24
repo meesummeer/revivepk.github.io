@@ -13,11 +13,10 @@ type NavLink = {
 const navLinkGroups: NavLink[][] = [
   [
     { label: "Home", href: "#" },
-    { label: "Treatments", href: "/treatments" },
-    { label: "Services", href: "#services" },
+    { label: "About", href: "#doctor" },
   ],
   [
-    { label: "About", href: "#doctor" },
+    { label: "Services", href: "#services" },
     { label: "Testimonials", href: "#testimonials" },
   ],
   [

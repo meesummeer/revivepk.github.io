@@ -18,7 +18,7 @@ const WHATSAPP_URL = "https://wa.me/923030008483";
 
 export default function DoctorSection() {
   return (
-    <section id="doctor" className="relative py-14 lg:py-20 bg-chrome text-chrome-foreground overflow-hidden">
+    <section id="doctor" className="relative scroll-mt-20 py-14 lg:py-20 bg-[#0d9488] text-chrome-foreground overflow-hidden">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         <div className="absolute -top-20 right-0 h-72 w-72 rounded-full bg-gold/12 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-gold/8 blur-3xl" />
@@ -66,7 +66,7 @@ export default function DoctorSection() {
               {badges.map((badge) => (
                 <span
                   key={badge.label}
-                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold border border-chrome-foreground/25 bg-chrome-foreground/10 text-chrome-foreground"
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold border border-chrome-foreground/25 bg-[#0f766e]-foreground/10 text-chrome-foreground"
                 >
                   <badge.icon className="h-4 w-4" />
                   {badge.label}

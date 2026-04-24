@@ -44,8 +44,8 @@
     --ivory: 0 0% 99%;
     --cream: 0 0% 99%;
 
-    /* Header/footer: cool deep slate — separates from logo greens */
-    --chrome: 222 38% 14%;
+    /* Header/footer: dark teal */
+    --chrome: 180 65% 14%;
     --chrome-foreground: 210 25% 98%;
 
     --sidebar-background: 0 0% 98%;
@@ -84,7 +84,7 @@
     --gold-foreground: 168 25% 10%;
     --ivory: 168 22% 8%;
     --cream: 168 22% 11%;
-    --chrome: 222 32% 10%;
+    --chrome: 180 65% 14%;
     --chrome-foreground: 210 22% 96%;
     --sidebar-background: 168 22% 8%;
     --sidebar-foreground: 168 15% 94%;

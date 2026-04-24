@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Phone, MessageCircle, ArrowLeft } from "lucide-react";
 import {
   getServicePanels,
@@ -61,7 +61,11 @@ function TreatmentCard({ service }: { service: ServiceEntry }) {
   const detail = treatmentDetails[service.id];
 
   return (
-    <div id={service.id} className="rounded-xl border border-border bg-card p-5 sm:p-6 shadow-sm scroll-mt-36">
+    <div
+      id={service.id}
+      className="rounded-xl border border-border bg-card p-5 sm:p-6 shadow-sm"
+      style={{ scrollMarginTop: "80px" }}
+    >
       <div className="flex items-start gap-4 mb-4">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-gold bg-gold/10 text-gold">
           <Icon className="h-5 w-5" aria-hidden />
@@ -142,9 +146,38 @@ function CategorySection({ panel, index }: { panel: ServicePanel; index: number 
 }
 
 export default function Treatments() {
+  const location = useLocation();
+
   useEffect(() => {
+    if (location.hash) return;
     window.scrollTo(0, 0);
-  }, []);
+  }, [location.hash]);
+
+  useEffect(() => {
+    if (!location.hash) return;
+
+    const id = decodeURIComponent(location.hash.slice(1));
+    const scrollToHashTarget = () => {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      return true;
+    };
+
+    if (scrollToHashTarget()) return;
+
+    const raf = requestAnimationFrame(() => {
+      scrollToHashTarget();
+    });
+    const timeout = window.setTimeout(() => {
+      scrollToHashTarget();
+    }, 150);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timeout);
+    };
+  }, [location.hash]);
 
   return (
     <>

@@ -1,37 +1,50 @@
 import { useState, useEffect, useId } from "react";
+import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { getServicePanels, type ServicePanel, type ServiceEntry } from "@/data/servicesContent";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const servicePanels = getServicePanels();
+const panelsById = Object.fromEntries(getServicePanels().map((panel) => [panel.id, panel]));
+const servicePanels: ServicePanel[] = [
+  panelsById.augmentation,
+  panelsById["face-health"],
+  panelsById["hair-health"],
+  panelsById.miscellaneous,
+].filter(Boolean) as ServicePanel[];
 const WHATSAPP_URL = "https://wa.me/923030008483";
 
 function ServiceItem({ service }: { service: ServiceEntry }) {
   const Icon = service.icon;
   return (
-    <article
-      className={cn(
-        "group border border-chrome-foreground/20 bg-chrome-foreground/[0.06] p-3.5 sm:p-4 transition-colors",
-        "hover:border-gold/45 hover:bg-chrome-foreground/10"
-      )}
+    <Link
+      to={`/treatments#${service.id}`}
+      className="block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/80 focus-visible:ring-offset-2 focus-visible:ring-offset-chrome"
+      aria-label={`View details for ${service.title}`}
     >
-      <div className="flex gap-3 sm:gap-3.5">
-        <div
-          className="flex h-10 w-10 shrink-0 items-center justify-center border border-gold/35 bg-gold/10 text-gold"
-          aria-hidden
-        >
-          <Icon className="h-5 w-5" strokeWidth={1.5} />
+      <article
+        className={cn(
+          "group border border-chrome-foreground/20 bg-chrome-foreground/[0.06] p-3.5 sm:p-4 transition-colors",
+          "hover:border-gold/45 hover:bg-chrome-foreground/10"
+        )}
+      >
+        <div className="flex gap-3 sm:gap-3.5">
+          <div
+            className="flex h-10 w-10 shrink-0 items-center justify-center border border-gold/35 bg-gold/10 text-gold"
+            aria-hidden
+          >
+            <Icon className="h-5 w-5" strokeWidth={1.5} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="font-rounded text-[0.95rem] sm:text-base font-semibold text-chrome-foreground leading-snug">
+              {service.title}
+            </h3>
+            <p className="mt-1.5 text-sm text-chrome-foreground/80 leading-relaxed">{service.description}</p>
+          </div>
         </div>
-        <div className="min-w-0 flex-1">
-          <h3 className="font-rounded text-[0.95rem] sm:text-base font-semibold text-chrome-foreground leading-snug">
-            {service.title}
-          </h3>
-          <p className="mt-1.5 text-sm text-chrome-foreground/80 leading-relaxed">{service.description}</p>
-        </div>
-      </div>
-    </article>
+      </article>
+    </Link>
   );
 }
 
@@ -171,7 +184,7 @@ export default function ServicesSection() {
   }, []);
 
   return (
-    <section id="services" className="relative bg-chrome text-chrome-foreground font-rounded overflow-hidden">
+    <section id="services" className="relative scroll-mt-20 bg-[#0f766e] text-chrome-foreground font-rounded overflow-hidden">
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-12 sm:pt-14 sm:pb-14 lg:pt-16 lg:pb-20">
         <motion.header
           initial={{ opacity: 0, y: 14 }}

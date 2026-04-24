@@ -103,7 +103,7 @@ const TestimonialsSection = () => {
   }, [index, t.quote]);
 
   return (
-    <section id="testimonials" className="relative -mt-10 py-20 lg:py-24 bg-chrome text-chrome-foreground overflow-hidden">
+    <section id="testimonials" className="relative scroll-mt-20 -mt-10 py-20 lg:py-24 bg-[#0d9488] text-chrome-foreground overflow-hidden">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         <div className="absolute -top-16 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-gold/12 blur-3xl" />
         <div className="absolute bottom-0 -right-12 h-64 w-64 rounded-full bg-gold/8 blur-3xl" />
@@ -132,7 +132,7 @@ const TestimonialsSection = () => {
             type="button"
             variant="ghost"
             size="icon"
-            className="absolute left-0 top-[42%] -translate-y-1/2 z-10 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-chrome-foreground/25 bg-chrome-foreground/10 text-chrome-foreground shadow-sm hover:bg-chrome-foreground/20"
+            className="absolute left-0 top-[42%] -translate-y-1/2 z-10 h-9 w-9 sm:h-10 sm:w-10 rounded-full border border-chrome-foreground/25 bg-[#0f766e]-foreground/10 text-chrome-foreground shadow-sm hover:bg-chrome-foreground/20"
             aria-label="Previous review"
             onClick={() => go(-1)}
           >
