@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Award, Globe, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -8,15 +9,52 @@ const badges = [
   { icon: GraduationCap, label: "Aesthetic Specialist" },
 ];
 
-const MAIN_PORTRAIT = { src: "/dr-husnain.jpeg", alt: "Dr. Husnain Shah" };
-
-const ACCENT_IMAGES = [
-  { src: "/pic4.jpeg", alt: "Dr. Husnain Shah at patient" },
-  { src: "/pic3.jpeg", alt: "Dr. Husnain Shah with award" },
+const COLLAGE_IMAGES = [
+  { src: "/pic1.jpeg", alt: "Dr. Husnain Shah clinic moment 1" },
+  { src: "/pic2.jpeg", alt: "Dr. Husnain Shah clinic moment 2" },
+  { src: "/pic3.jpeg", alt: "Dr. Husnain Shah clinic moment 3" },
+  { src: "/pic4.jpeg", alt: "Dr. Husnain Shah clinic moment 4" },
+  { src: "/pic5.jpeg", alt: "Dr. Husnain Shah clinic moment 5" },
+  { src: "/pic6.jpeg", alt: "Dr. Husnain Shah clinic moment 6" },
 ];
 const WHATSAPP_URL = "https://wa.me/923030008483";
+const CREDENTIALS = [
+  "Aesthetic Consultant",
+  "Director @IEBDAC",
+  "American Academy of Aesthetic Medicine",
+  "MCPS Dermatology",
+];
+
+type SlotName = "large" | "top" | "bottom";
+
+const SLOT_CLASSES: Record<SlotName, string> = {
+  large:
+    "left-0 top-0 w-[260px] sm:w-[300px] aspect-[3/4] rounded-2xl border-2 border-chrome-foreground/20 shadow-xl",
+  top:
+    "-top-4 -right-10 hidden lg:block w-[100px] sm:w-[120px] aspect-square rounded-xl border-2 border-chrome-foreground/20 shadow-lg",
+  bottom:
+    "-bottom-6 -right-6 hidden sm:block w-[120px] sm:w-[140px] aspect-square rounded-xl border-2 border-chrome-foreground/20 shadow-lg",
+};
 
 export default function DoctorSection() {
+  const [slotImages, setSlotImages] = useState<[number, number, number]>([0, 1, 2]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setSlotImages((prev) => {
+        const [, top, bottom] = prev;
+        const nextImage = (bottom + 1) % COLLAGE_IMAGES.length;
+        return [top, bottom, nextImage];
+      });
+    }, 3000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const collageItems: Array<{ slot: SlotName; imageIndex: number }> = [
+    { slot: "large", imageIndex: slotImages[0] },
+    { slot: "top", imageIndex: slotImages[1] },
+    { slot: "bottom", imageIndex: slotImages[2] },
+  ];
+
   return (
     <section id="doctor" className="relative scroll-mt-20 py-14 lg:py-20 bg-[#0d9488] text-chrome-foreground overflow-hidden">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
@@ -33,15 +71,27 @@ export default function DoctorSection() {
             className="relative flex justify-center"
           >
             <div className="relative">
-              <div className="w-[260px] sm:w-[300px] aspect-[3/4] rounded-2xl overflow-hidden border-2 border-chrome-foreground/20 shadow-xl">
-                <img src={MAIN_PORTRAIT.src} alt={MAIN_PORTRAIT.alt} className="w-full h-full object-cover" />
-              </div>
-              <div className="absolute -bottom-6 -right-6 w-[120px] sm:w-[140px] aspect-square rounded-xl overflow-hidden border-2 border-chrome-foreground/20 shadow-lg hidden sm:block">
-                <img src={ACCENT_IMAGES[0].src} alt={ACCENT_IMAGES[0].alt} className="w-full h-full object-cover" />
-              </div>
-              <div className="absolute -top-4 -right-10 w-[100px] sm:w-[120px] aspect-square rounded-xl overflow-hidden border-2 border-chrome-foreground/20 shadow-lg hidden lg:block">
-                <img src={ACCENT_IMAGES[1].src} alt={ACCENT_IMAGES[1].alt} className="w-full h-full object-cover" />
-              </div>
+              <div className="w-[260px] sm:w-[300px] aspect-[3/4]" />
+              <AnimatePresence initial={false}>
+                {collageItems.map(({ slot, imageIndex }) => {
+                  const image = COLLAGE_IMAGES[imageIndex];
+                  const zIndex = slot === "large" ? 1 : 10;
+                  return (
+                    <motion.div
+                      key={image.src}
+                      layout
+                      className={`absolute overflow-hidden ${SLOT_CLASSES[slot]}`}
+                      style={{ zIndex }}
+                      initial={{ opacity: 0.75, scale: 0.96 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.96 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    >
+                      <img src={image.src} alt={image.alt} className="w-full h-full object-cover" />
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
             </div>
           </motion.div>
 
@@ -58,15 +108,20 @@ export default function DoctorSection() {
             <h2 className="font-rounded text-4xl sm:text-5xl lg:text-6xl font-bold mb-3 tracking-tight leading-[1.1] text-chrome-foreground">
               Dr. Husnain Shah
             </h2>
-            <p className="text-chrome-foreground/85 text-lg lg:text-xl font-medium tracking-wide mb-6">
-              Aesthetic Medicine Specialist
-            </p>
+            <div className="mb-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm lg:text-base font-medium tracking-wide text-chrome-foreground/75">
+              {CREDENTIALS.map((item, idx) => (
+                <span key={item} className="inline-flex items-center">
+                  {idx > 0 && <span className="mr-2 text-chrome-foreground/45" aria-hidden>&bull;</span>}
+                  {item}
+                </span>
+              ))}
+            </div>
 
             <div className="flex flex-wrap gap-3 mb-6">
               {badges.map((badge) => (
                 <span
                   key={badge.label}
-                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold border border-chrome-foreground/25 bg-[#0f766e]-foreground/10 text-chrome-foreground"
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold border border-chrome-foreground/25 bg-chrome-foreground/10 text-chrome-foreground"
                 >
                   <badge.icon className="h-4 w-4" />
                   {badge.label}
@@ -75,7 +130,7 @@ export default function DoctorSection() {
             </div>
 
             <p className="text-chrome-foreground text-lg leading-relaxed mb-6 max-w-xl">
-              <span className="font-semibold">Over 15 years</span> of experience in aesthetic medicine.
+              <span className="font-semibold">Almost a decade</span> of experience in aesthetic medicine.
               Director of the International Education Board of Aesthetics, Dr. Husnain Shah
               leads training programs across three continents.
             </p>

@@ -184,7 +184,16 @@ export default function ServicesSection() {
   }, []);
 
   return (
-    <section id="services" className="relative scroll-mt-20 bg-[#0f766e] text-chrome-foreground font-rounded overflow-hidden">
+    <section
+      id="services"
+      className="relative scroll-mt-20 text-chrome-foreground font-rounded overflow-hidden"
+      style={{
+        backgroundImage: "url('/services-bg.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute inset-0 bg-[#0f766e]/85" aria-hidden />
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-12 sm:pt-14 sm:pb-14 lg:pt-16 lg:pb-20">
         <motion.header
           initial={{ opacity: 0, y: 14 }}
