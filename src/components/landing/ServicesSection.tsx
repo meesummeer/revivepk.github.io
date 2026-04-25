@@ -193,7 +193,11 @@ export default function ServicesSection() {
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-[#0f766e]/85" aria-hidden />
+      <div
+        className="absolute inset-0"
+        style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(2px)" }}
+        aria-hidden
+      />
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-12 sm:pt-14 sm:pb-14 lg:pt-16 lg:pb-20">
         <motion.header
           initial={{ opacity: 0, y: 14 }}
