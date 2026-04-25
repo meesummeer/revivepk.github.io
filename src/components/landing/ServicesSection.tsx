@@ -191,6 +191,8 @@ export default function ServicesSection() {
         backgroundImage: "url('/services-bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        scrollSnapAlign: "start",
+        scrollMarginTop: "72px",
       }}
     >
       <div

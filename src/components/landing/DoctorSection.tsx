@@ -56,7 +56,11 @@ export default function DoctorSection() {
   ];
 
   return (
-    <section id="doctor" className="relative scroll-mt-20 py-14 lg:py-20 bg-[#0d9488] text-chrome-foreground overflow-hidden">
+    <section
+      id="doctor"
+      className="relative scroll-mt-20 py-14 lg:py-20 bg-[#0d9488] text-chrome-foreground overflow-hidden"
+      style={{ scrollSnapAlign: "start", scrollMarginTop: "72px" }}
+    >
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         <div className="absolute -top-20 right-0 h-72 w-72 rounded-full bg-gold/12 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-gold/8 blur-3xl" />

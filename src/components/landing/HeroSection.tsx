@@ -38,7 +38,10 @@ const HeroSection = () => {
   const slide = RESULT_GALLERY[current];
 
   return (
-    <section className="relative min-h-[100svh] flex items-start overflow-hidden">
+    <section
+      className="relative min-h-[100svh] flex items-start overflow-hidden"
+      style={{ scrollSnapAlign: "start", scrollMarginTop: "72px" }}
+    >
       <div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${HERO_BG})` }}

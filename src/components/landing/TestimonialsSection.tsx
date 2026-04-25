@@ -103,7 +103,11 @@ const TestimonialsSection = () => {
   }, [index, t.quote]);
 
   return (
-    <section id="testimonials" className="relative scroll-mt-20 -mt-10 py-20 lg:py-24 bg-[#0d9488] text-chrome-foreground overflow-hidden">
+    <section
+      id="testimonials"
+      className="relative scroll-mt-20 -mt-10 py-20 lg:py-24 bg-[#0d9488] text-chrome-foreground overflow-hidden"
+      style={{ scrollSnapAlign: "start", scrollMarginTop: "72px" }}
+    >
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
         <div className="absolute -top-16 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-gold/12 blur-3xl" />
         <div className="absolute bottom-0 -right-12 h-64 w-64 rounded-full bg-gold/8 blur-3xl" />

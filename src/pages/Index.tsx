@@ -11,14 +11,23 @@ const Index = () => {
   return (
     <>
       <Navbar />
-      <main>
+      <main
+        style={{
+          scrollSnapType: "y proximity",
+          overflowY: "scroll",
+          height: "100vh",
+          scrollBehavior: "smooth",
+        }}
+      >
         <HeroSection />
         <DoctorSection />
         <ServicesSection />
         <TestimonialsSection />
         <BookingSection />
+        <div style={{ scrollSnapAlign: "start" }}>
+          <Footer />
+        </div>
       </main>
-      <Footer />
       <MobileBookingCTA />
     </>
   );
