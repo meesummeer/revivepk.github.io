@@ -15,6 +15,10 @@ import {
   Zap,
   CircleAlert,
   Heart,
+  Stethoscope,
+  ScanFace,
+  Bolt,
+  Microscope,
 } from "lucide-react";
 
 export type ServiceEntry = {
@@ -70,8 +74,12 @@ export const servicesCategories: ServiceCategory[] = [
       { id: "threads", title: "Threads", description: "Instant lifting effect with collagen boost.", icon: GitBranch },
       { id: "lipolytics", title: "Lipolytics", description: "Targets stubborn facial and body fat.", icon: Droplets },
       { id: "laser-hair-removal", title: "Laser Hair Removal", description: "Permanent reduction for smooth skin.", icon: Zap },
-      { id: "mole-removal", title: "Mole Removal", description: "Quick, precise cosmetic removal with minimal scarring.", icon: CircleAlert },
+      { id: "mole-removal", title: "Mole Removal", description: "Safe and precise removal of moles and skin growths", icon: CircleAlert },
       { id: "physiotherapy", title: "Physiotherapy", description: "Pain relief and mobility restoration.", icon: Heart },
+      { id: "clinical-opd", title: "Clinical OPD", description: "General outpatient consultations for skin and aesthetic concerns", icon: Stethoscope },
+      { id: "skin-diseases", title: "Skin Diseases", description: "Diagnosis and treatment of common and complex skin conditions", icon: ScanFace },
+      { id: "cautery", title: "Cautery", description: "Precise removal of skin lesions using electrocautery", icon: Bolt },
+      { id: "biopsy", title: "Biopsy", description: "Skin tissue sampling for accurate diagnosis", icon: Microscope },
     ],
   },
 ];
@@ -251,10 +259,38 @@ export const treatmentDetails: Record<string, TreatmentDetail> = {
   },
   "mole-removal": {
     id: "mole-removal",
-    bestFor: "Cosmetic mole or skin tag removal",
-    sessions: "Single session",
-    downtime: "3–5 days for healing",
-    faq: "Precise removal techniques ensure minimal scarring and clean cosmetic outcomes.",
+    bestFor: "Cosmetically bothersome or suspicious moles",
+    sessions: "1 session",
+    downtime: "3–7 days",
+    faq: "Mole excised under local anaesthetic with precision technique for minimal scarring.",
+  },
+  "clinical-opd": {
+    id: "clinical-opd",
+    bestFor: "General skin concerns, rashes, consultations",
+    sessions: "Single visit or follow-up as needed",
+    downtime: "None",
+    faq: "Doctor evaluates skin condition, prescribes treatment or refers for further care.",
+  },
+  "skin-diseases": {
+    id: "skin-diseases",
+    bestFor: "Eczema, psoriasis, acne, fungal infections, pigmentation disorders",
+    sessions: "Varies by condition",
+    downtime: "None",
+    faq: "Clinical diagnosis followed by targeted medical or topical treatment plan.",
+  },
+  "cautery": {
+    id: "cautery",
+    bestFor: "Skin tags, warts, small benign lesions",
+    sessions: "1 session",
+    downtime: "2–5 days healing",
+    faq: "Controlled electrical current precisely removes unwanted skin lesions with minimal scarring.",
+  },
+  "biopsy": {
+    id: "biopsy",
+    bestFor: "Suspicious moles, unidentified skin lesions, chronic skin conditions",
+    sessions: "1 session",
+    downtime: "3–5 days",
+    faq: "Small tissue sample taken under local anaesthetic and sent for laboratory analysis.",
   },
   "physiotherapy": {
     id: "physiotherapy",
